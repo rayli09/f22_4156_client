@@ -15,6 +15,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "init-db" : "cd backend && python3 init_db.py",
     "start-backend": "cd backend && ../env/bin/flask run --no-debugger",
     "build": "react-scripts build",
     "test": "react-scripts test",
