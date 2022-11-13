@@ -5,8 +5,8 @@ app = Flask(__name__)
 @app.route('/profile')
 def my_profile():
     response_body = {
-        "name": "Nagato",
-        "about" :"Hello! I'm a full stack developer that loves python and javascript"
+        "name": "Ruize Li",
+        "about" :"WTF I just got laid off"
     }
 
     return response_body
