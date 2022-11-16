@@ -10,7 +10,7 @@ This is an application which contains a connected flask backend to a react front
 4. Return to the base directory and run: `npm install` before running the scripts below.
 
 #### Run backend
-1. `npm run start-backend`
+1. `flask run`(preferred) or  `npm run start-backend`
 2. Open [http://localhost:5000](http://localhost:5000) to view it in the browser.
 
 #### Run web app
