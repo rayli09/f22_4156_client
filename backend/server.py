@@ -1,10 +1,11 @@
 from flask import Flask, jsonify, request
 import requests
 import db_service
+from flask_cors import CORS
 
 SERVICE_ENDPOINT = 'http://easymoneytest-env.eba-gxycxg4j.us-east-1.elasticbeanstalk.com'
 app = Flask(__name__)
-
+CORS(app)
 @app.route('/')
 def helloworld():
     return "hello world"
