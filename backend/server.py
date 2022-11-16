@@ -17,21 +17,26 @@ def manage_assets(uid):
         return assets
     elif method == 'POST':
         ass = request.json
-        last_row_id = db_service.insert_db('insert into assets (id,amount,desc,owner_id) values (?,?,?,?) ', 
-        [ass['id'], ass['amount'], ass['desc'], ass['owner_id']])
-        return last_row_id
+        new_ass_id = db_service.insert_db('insert into assets (amount,desc,owner_id) values (?,?,?,?) ', 
+        [ass['amount'], ass['desc'], ass['owner_id']])
+        return "{} has been created.".format(new_ass_id)
     elif method == 'DELETE':
         pass
-    return 'NOT SUPPORTED'
     
+    return 'NOT SUPPORTED'
+
 @app.route('/profile/<uid>')
 def my_profile(uid):
     #TODO query by uid
-    rsp = {
-        "name": "Ruize Li",
-        "about" :"WTF I just got laid off"
-    }
-    return rsp
+    method = request.method
+    if method == 'GET':
+        return db_service.query_db('select * from users where uid = ?', [uid])
+    elif method == 'POST':
+        p = request.json
+        new_p_id = db_service.insert_db('insert into users (username,ad1,ad2,ad3) values (?,?,?,?) ', 
+        [p['username'], p['ad1'], p['ad2'], p['ad3']])
+        return "{} has been created.".format(new_p_id)
+    return 'NOT SUPPORTED'
 
 @app.route('/feed/<uid>', methods=['GET', 'POST'])
 def user_feed(uid):
