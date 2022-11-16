@@ -1,7 +1,15 @@
 import { useState } from 'react'
 import axios from "axios";
-import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter } from 'react-router-dom';
+import { Switch, Route, Routes, Link } from 'react-router-dom';
+import MyNavbar from './components/MyNavbar'
+import Home from './components/Home'
+import Nopage from './components/Nopage'
+import ManageAdsPage from './components/ManageAdsPage';
+import ManageAssetsPage from './components/ManageAssetsPage';
+import UserProfilePage from './components/UserProfilePage';
 
 function App() {
 
@@ -25,34 +33,21 @@ function App() {
         console.log(error.response.headers)
         }
     })}
-    //end of new line 
+
     
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-
-        {/* new line start*/}
-        <p>To get your profile details: </p><button onClick={getData}>Click me</button>
-        {profileData && <div>
-              <p>Profile name: {profileData.profile_name}</p>
-              <p>About me: {profileData.about_me}</p>
-            </div>
-        }
-         {/* end of new line */}
-      </header>
-    </div>
+    <BrowserRouter>
+      <MyNavbar /> 
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/manageads" element={<ManageAdsPage />} />
+        <Route path="/manageassets" element={<ManageAssetsPage />} />
+        <Route path="/profile" element={<UserProfilePage />} />
+        <Route path="*" element={<Nopage />} />
+      </Routes>
+      </BrowserRouter>
+  
   );
 }
 
