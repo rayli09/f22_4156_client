@@ -1,5 +1,5 @@
 import React from 'react'
-const ManageAds = () => (
+const ManageAdsPage = () => (
     <h1>Manage Ads page</h1>
 )
-export default ManageAds
+export default ManageAdsPage
