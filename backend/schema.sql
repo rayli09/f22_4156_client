@@ -14,4 +14,13 @@ CREATE TABLE users (
     ad1 TEXT NULL,
     ad2 TEXT NULL,
     ad3 TEXT NULL
-)
+);
+
+DROP TABLE IF EXISTS assets;
+CREATE TABLE assets (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    amount INTEGER NOT NULL,
+    desc TEXT NULL,
+    owner_id INTEGER NOT NULL,
+    FOREIGN KEY(owner_id) REFERENCES users(id)
+);
