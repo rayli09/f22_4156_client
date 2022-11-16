@@ -6,3 +6,12 @@ CREATE TABLE posts (
     title TEXT NOT NULL,
     content TEXT NOT NULL
 );
+
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL,
+    ad1 TEXT NULL,
+    ad2 TEXT NULL,
+    ad3 TEXT NULL
+)
