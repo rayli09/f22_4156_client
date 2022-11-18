@@ -1,13 +1,35 @@
-from flask import Flask, jsonify, request
+import json
+from flask import Flask, jsonify, request, session
+from flask_session import Session
 import requests
 import db_service
 from flask_cors import CORS
 
-SERVICE_ENDPOINT = 'http://easymoneytest-env.eba-gxycxg4j.us-east-1.elasticbeanstalk.com'
+REMOTE_SERVICE_ENDPOINT = 'http://easymoneytest-env.eba-gxycxg4j.us-east-1.elasticbeanstalk.com'
+SERVICE_ENDPOINT = 'http://localhost:8080'
+
 app = Flask(__name__)
 CORS(app)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
+
+@app.before_request
+def load_user():
+    if 'token' not in session and request.endpoint != 'auth':
+        return {'url' : '/auth'}
+
+@app.route('/auth/<action>', methods=['POST'])
+def auth(action):
+    if request.method != 'POST':
+        return "auth only supports post"
+    if action == 'register':
+        return handle_register(request)
+    elif action == 'login':
+        return handle_login(request)
+
 @app.route('/')
-def helloworld():
+def hello_world():
     return "hello world"
 
 @app.route('/assets/<uid>')
@@ -41,14 +63,60 @@ def my_profile(uid):
 
 @app.route('/feed/<uid>', methods=['GET', 'POST'])
 def user_feed(uid):
-    # get/set user's feed by uid
+    """
+    get user's feed by uid or inject ads into the feed.
+
+    Injection: simply create dummy transfers from business user to the personal user with the promotion text.
+    """
     rsp = 'NOT FOUND.'
     if request.method == 'GET':
-        rsp = requests.get('{S}/feed/{uid}'.format(S=SERVICE_ENDPOINT, uid=uid))
+        rsp = get_feed_by_uid(uid)
+        return jsonify(rsp.text)
     elif request.method == 'POST':
-        rsp = requests.post('{S}/feed/{uid}'.format(S=SERVICE_ENDPOINT, uid=uid), json=request.json)
-    return rsp.text
+        return create_transfer(request, uid)
+    return rsp
+############## HELPERS ##############
+def get_token():
+    return {'Authorization' : session['token']}
 
+def handle_register(request):
+    rsp = requests.post('{S}/auth/register'.format(S=SERVICE_ENDPOINT), json = request.json)
+    # use json.loads to parse json properly
+    return json.loads(rsp.text)
+
+def handle_login(request):
+    req = request.json
+    try:
+        rsp = requests.post('{S}/auth/login'.format(S=SERVICE_ENDPOINT), json = req)
+        print(rsp.text)
+        token = rsp.text
+        session['token'] = token
+        return {"token" : token}
+    except Exception as err:
+        return "err when login: {}".format(err)
+
+def get_feed_by_uid(uid):
+    return requests.get('{S}/feed/{uid}'.format(S=SERVICE_ENDPOINT, uid=uid))
+
+def create_transfer(request, tuid):
+    req = request.json
+    # get biz user uid, personal user uid
+    # TODO THIS IS HARDCODED!!
+    b_uid = 1
+    payload = {
+        "fromUid": b_uid,
+        "toUid" : tuid,
+        "amount" : 0.1,
+        "description" : "INJECTED ADS",
+        "category": "FOOD"
+    }
+    # insert a transfer from biz to personal user
+    try:
+        rsp = requests.post('{S}/transfer/create'.format(S=SERVICE_ENDPOINT), json=payload, headers = get_token())
+        print("rsp : " + rsp.text)
+    except Exception as err:
+        return "err in creating transfer : {}".format(err)
+    return json.loads(rsp.text)
 
 
 
