@@ -34,6 +34,7 @@ def hello_world():
 
 @app.route('/assets/<uid>')
 def manage_assets(uid):
+    # TODO needs refactoring
     method = request.method
     if method == 'GET':
         assets = db_service.query_db('select * from assets where uid = ?', [uid])
@@ -50,7 +51,7 @@ def manage_assets(uid):
 
 @app.route('/profile/<uid>')
 def my_profile(uid):
-    #TODO query by uid
+    #TODO needs refactoring query by uid
     method = request.method
     if method == 'GET':
         return db_service.query_db('select * from users where uid = ?', [uid])
@@ -71,7 +72,7 @@ def user_feed(uid):
     rsp = 'NOT FOUND.'
     if request.method == 'GET':
         rsp = get_feed_by_uid(uid)
-        return jsonify(rsp.text)
+        return json.loads(rsp.text)
     elif request.method == 'POST':
         return create_transfer(request, uid)
     return rsp
@@ -80,6 +81,7 @@ def get_token():
     return {'Authorization' : session['token']}
 
 def handle_register(request):
+    # TODO make sure userType is business
     rsp = requests.post('{S}/auth/register'.format(S=SERVICE_ENDPOINT), json = request.json)
     # use json.loads to parse json properly
     return json.loads(rsp.text)
@@ -96,15 +98,16 @@ def handle_login(request):
         return "err when login: {}".format(err)
 
 def get_feed_by_uid(uid):
-    return requests.get('{S}/feed/{uid}'.format(S=SERVICE_ENDPOINT, uid=uid))
+    return requests.get('{S}/feed/'.format(S=SERVICE_ENDPOINT, uid=uid), headers = get_token())
 
 def create_transfer(request, tuid):
+    # TODO parse ads && details from request json
     req = request.json
     # get biz user uid, personal user uid
-    # TODO THIS IS HARDCODED!!
-    b_uid = 1
+    # TODO THIS IS HARDCODED!! fromuid is the current user, i.e. business user's uid
+    f_uid = 1
     payload = {
-        "fromUid": b_uid,
+        "fromUid": f_uid,
         "toUid" : tuid,
         "amount" : 0.1,
         "description" : "INJECTED ADS",
@@ -112,7 +115,10 @@ def create_transfer(request, tuid):
     }
     # insert a transfer from biz to personal user
     try:
-        rsp = requests.post('{S}/transfer/create'.format(S=SERVICE_ENDPOINT), json=payload, headers = get_token())
+        rsp = requests.post(
+            '{S}/transfer/create'.format(S=SERVICE_ENDPOINT), 
+            json=payload, 
+            headers = get_token())
         print("rsp : " + rsp.text)
     except Exception as err:
         return "err in creating transfer : {}".format(err)

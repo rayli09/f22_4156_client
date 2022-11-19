@@ -10,6 +10,8 @@ import Nopage from './components/Nopage'
 import ManageAdsPage from './components/ManageAdsPage';
 import ManageAssetsPage from './components/ManageAssetsPage';
 import UserProfilePage from './components/UserProfilePage';
+import Login from './components/Login'
+import Signup from './components/Signup';
 
 function App() {
 
@@ -44,6 +46,8 @@ function App() {
         <Route path="/manageads" element={<ManageAdsPage />} />
         <Route path="/manageassets" element={<ManageAssetsPage />} />
         <Route path="/profile" element={<UserProfilePage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="*" element={<Nopage />} />
       </Routes>
       </BrowserRouter>

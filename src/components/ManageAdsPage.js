@@ -14,8 +14,9 @@ const ManageAdsPage = () => {
     const [feedData, setFeedData] = useState(null)
     const [userInput, setUserInput] = useState(null)
     const [selectedAd, setSelectedAd] = useState(null)
+    const [noticeMsg, setNoticeMsg] = useState(null)
     useEffect(() => {
-        handleFetchData().then(r => console.log(r));
+        handleFetchData();
     }, [])
     const handleInjectAd = async () => {
         // TODO
@@ -29,8 +30,13 @@ const ManageAdsPage = () => {
             }
             const promise = axios.get(`http://127.0.0.1:5000/feed/${uid}`);
             promise.then((rsp) => {
-                setFeedData(rsp.data);
-                setUserInput(uid);
+                if (rsp.data?.url) {
+                    setNoticeMsg('Please authenticate first.')
+                } else {
+                    setFeedData(rsp.data);
+                    setUserInput(uid);
+                }
+
             })
         } catch (err) {
             console.log(err)
@@ -50,6 +56,7 @@ const ManageAdsPage = () => {
         <>
             <h1>Manage Ads page</h1>
             <h3>Showing user feed for uid {userInput}</h3>
+            <h3>{noticeMsg}</h3>
         </>
     );
 
