@@ -1,7 +1,10 @@
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import { useState } from "react";
+import NoticeBanner from "./NoticeBanner";
 import axios from "axios";
-export default function Login() {
+import CLIENT from '../CLIENT';
+
+export default function Login(props) {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const onEmail = (e) => setEmail(e.target.value);
@@ -16,16 +19,29 @@ export default function Login() {
             "password" : password,
         }
         try {
-            axios.post(`http://127.0.0.1:5000/auth/login`, payload)
+            CLIENT.post("auth/login", payload)
             .then((rsp) => {
                 console.log(rsp);
                 if (rsp.data?.message){
                     setNotice(rsp.data);
-                } else {
+                } else if (rsp.data?.token) {
                     // success login
-                    setSuccess("successfully logged in, token: " + rsp.data?.token);
+                    setSuccess("successfully logged in!");
+                    props?.setUserData({
+                        'email' : email,
+                        'token': rsp.data?.token
+                    });
+                } else {
+                    setNotice('Err when logging in.')
                 }
 
+            }).catch(function (error) {
+                if (error.status === 400) {
+                    setNotice("Fail to login")
+                } else {
+                    setNotice(error)
+                }
+        
             })
         }
         catch (err){
@@ -33,23 +49,20 @@ export default function Login() {
         }
     }
     const noticeBanner = ( notice && 
-        <>
-        <h2>Error fields: <span>{notice?.errorFields
+        <>Error fields: <span>{notice?.errorFields
 ?.join()} </span>
         - {notice?.message} 
-        </h2>
         </>
     );
-    const successBanner = (
-        <p>{success}</p>
-    )
   return (
     <div>
         
       <Container>
         <Row className="vh-100 d-flex justify-content-center align-items-center">
           <Col md={8} lg={6} xs={12}>
-          {successBanner ?? noticeBanner}
+          <NoticeBanner children={success || noticeBanner}/>
+            { props?.userData == null ? 
+            <>
             <div className="border border-3 border-primary"></div>
             <Card className="shadow">
               <Card.Body>
@@ -89,7 +102,8 @@ export default function Login() {
                   </div>
                 </div>
               </Card.Body>
-            </Card>
+            </Card> </>: <>You are already logged in.</>
+            }
           </Col>
         </Row>
       </Container>

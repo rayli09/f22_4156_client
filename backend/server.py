@@ -4,6 +4,7 @@ from flask_session import Session
 import requests
 import db_service
 from flask_cors import CORS
+from flask import Response
 
 REMOTE_SERVICE_ENDPOINT = 'http://easymoneytest-env.eba-gxycxg4j.us-east-1.elasticbeanstalk.com'
 SERVICE_ENDPOINT = 'http://localhost:8080'
@@ -14,23 +15,35 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-@app.before_request
-def load_user():
-    if 'token' not in session and request.endpoint != 'auth':
-        return {'url' : '/auth'}
+# @app.before_request
+# def check_login():
+#     print(request.headers.get('Authorization'))
+#     print(request.method)
+#     if request.method != 'OPTIONS' or (request.endpoint != 'auth' and request.headers.get('Authorization') is None):
+#         return jsonify({'url' : '/auth', 'loggedin': 'false'}), 401
 
-@app.route('/auth/<action>', methods=['POST'])
+@app.route('/whoami', methods=['GET'])
+def whoami():
+    # return current user profile once logged in
+    return {'token': get_token()["Authorization"], 'loggedin':'true'}
+
+@app.route('/auth/<action>', methods=['POST', 'OPTIONS'])
 def auth(action):
+    # if is_user_logged_in():
+    #     return "Already logged in"
     if request.method != 'POST':
         return "auth only supports post"
     if action == 'register':
         return handle_register(request)
     elif action == 'login':
         return handle_login(request)
+    elif action == 'logout':
+        # TODO
+        pass
 
 @app.route('/')
 def hello_world():
-    return "hello world"
+    return jsonify("hello world"), 200
 
 @app.route('/assets/<uid>')
 def manage_assets(uid):
@@ -71,10 +84,12 @@ def user_feed(uid):
     """
     rsp = 'NOT FOUND.'
     if request.method == 'GET':
-        rsp = get_feed_by_uid(uid)
-        return json.loads(rsp.text)
+        # print(request.headers)
+        rsp = get_feed_by_uid(uid,request.headers.get('Authorization'))
+        print(rsp)
+        return json.loads(rsp.text), 200
     elif request.method == 'POST':
-        return create_transfer(request, uid)
+        return create_transfer(request, uid), 200
     return rsp
 ############## HELPERS ##############
 def get_token():
@@ -90,15 +105,16 @@ def handle_login(request):
     req = request.json
     try:
         rsp = requests.post('{S}/auth/login'.format(S=SERVICE_ENDPOINT), json = req)
-        print(rsp.text)
         token = rsp.text
+        if len(token) == 0:
+            return jsonify("Failed to validate"), 400
         session['token'] = token
-        return {"token" : token}
+        return jsonify({"token" : token}), 200
     except Exception as err:
-        return "err when login: {}".format(err)
+        return jsonify("err when login: {}".format(err)), 400
 
-def get_feed_by_uid(uid):
-    return requests.get('{S}/feed/'.format(S=SERVICE_ENDPOINT, uid=uid), headers = get_token())
+def get_feed_by_uid(uid, token):
+    return requests.get('{S}/feed'.format(S=SERVICE_ENDPOINT), headers = {'Authorization':token})
 
 def create_transfer(request, tuid):
     # TODO parse ads && details from request json
@@ -124,5 +140,5 @@ def create_transfer(request, tuid):
         return "err in creating transfer : {}".format(err)
     return json.loads(rsp.text)
 
-
-
+def is_user_logged_in():
+    return 'token' in session

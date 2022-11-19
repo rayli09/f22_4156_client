@@ -1,9 +1,12 @@
 import React from 'react'
-import {Navbar, Nav} from 'react-bootstrap'
+import {Navbar, Nav, Button} from 'react-bootstrap'
 import {LinkContainer} from 'react-router-bootstrap'
 import Container from 'react-bootstrap/Container';
 import { Switch, Route, Link } from 'react-router-dom';
-const MyNavbar = () => {
+const MyNavbar = (props) => {
+    const username = (
+      props?.userData && <Button>{props.userData.email}</Button>
+    );
     return (
       <>
 
@@ -14,7 +17,8 @@ const MyNavbar = () => {
           <Nav.Link as={Link} to="/manageads">Manage Ads</Nav.Link>
           <Nav.Link as={Link} to="/manageassets">Manage Assets</Nav.Link>
           <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
-          <Nav.Link as={Link} to="/login">Auth</Nav.Link>
+         
+          {username ||  <Nav.Link as={Link} to="/login">Auth</Nav.Link>}
         </Nav>
       </Container>
     </Navbar>

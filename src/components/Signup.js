@@ -1,8 +1,9 @@
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import axios from "axios";
 import { useState } from "react";
+import NoticeBanner from "./NoticeBanner";
 
-export default function Signup( ) {
+export default function Signup(props) {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [accountName, setAccountName] = useState();
@@ -54,14 +55,12 @@ export default function Signup( ) {
         </h2>
         </>
     );
-    const successBanner = (
-        <h2>{success}</h2>
-    )
   return (
     <div>
+    <NoticeBanner children={success || noticeBanner}/>
+    {props?.userData == null ? 
       <Container>
         <Row className="vh-100 d-flex justify-content-center align-items-center">
-        {successBanner ?? noticeBanner}
           <Col md={8} lg={6} xs={12}>
             <div className="border border-3 border-primary"></div>
             <Card className="shadow">
@@ -135,6 +134,7 @@ export default function Signup( ) {
           </Col>
         </Row>
       </Container>
+    : <>You are already logged in.</>}
     </div>
   );
 }

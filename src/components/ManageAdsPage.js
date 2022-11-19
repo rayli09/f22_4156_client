@@ -6,11 +6,13 @@ import Loading from './Loading'
 import Activity from './ads/Activity'
 import UserInput from './ads/UserInput';
 import InjectAdsController from './ads/InjectAdsController';
+import NoticeBanner from './NoticeBanner';
+import { END_POINT } from '../utils';
 
 const generateKey = (pre) => {
     return `${pre}_${new Date().getTime()}`;
 }
-const ManageAdsPage = () => {
+const ManageAdsPage = (props) => {
     const [feedData, setFeedData] = useState(null)
     const [userInput, setUserInput] = useState(null)
     const [selectedAd, setSelectedAd] = useState(null)
@@ -28,8 +30,12 @@ const ManageAdsPage = () => {
             if (!uid) {
                 return;
             }
-            const promise = axios.get(`http://127.0.0.1:5000/feed/${uid}`);
-            promise.then((rsp) => {
+            axios.get(`${END_POINT}feed/${uid}`,{
+                headers: {
+                    'Authorization': props?.userData?.token 
+                }
+            }).then((rsp) => {
+                console.log(rsp)
                 if (rsp.data?.url) {
                     setNoticeMsg('Please authenticate first.')
                 } else {
@@ -37,6 +43,9 @@ const ManageAdsPage = () => {
                     setUserInput(uid);
                 }
 
+            }).catch(function (error) {
+                console.log(error)
+                setNoticeMsg("error when fetching feed.");      
             })
         } catch (err) {
             console.log(err)
@@ -55,8 +64,8 @@ const ManageAdsPage = () => {
     const header = (userInput) => (
         <>
             <h1>Manage Ads page</h1>
+            <NoticeBanner children={noticeMsg}/>
             <h3>Showing user feed for uid {userInput}</h3>
-            <h3>{noticeMsg}</h3>
         </>
     );
 
