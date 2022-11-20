@@ -1,6 +1,7 @@
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NoticeBanner from "./NoticeBanner";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CLIENT from '../CLIENT';
 
@@ -27,10 +28,16 @@ export default function Login(props) {
                 } else if (rsp.data?.token) {
                     // success login
                     setSuccess("successfully logged in!");
-                    props?.setUserData({
+                    const user = {
                         'email' : email,
                         'token': rsp.data?.token
-                    });
+                    }
+                    props?.setUserData(user);
+                    localStorage.setItem("userData", JSON.stringify(user));
+                    // console.log("already set items!!!");
+                    // console.log(localStorage.getItem("userData"))
+                    // history.push("/home");
+                    // history.go();
                 } else {
                     setNotice('Err when logging in.')
                 }

@@ -75,21 +75,16 @@ def my_profile(uid):
         return "{} has been created.".format(new_p_id)
     return 'NOT SUPPORTED'
 
-@app.route('/feed/<uid>', methods=['GET', 'POST'])
-def user_feed(uid):
-    """
-    get user's feed by uid or inject ads into the feed.
-
-    Injection: simply create dummy transfers from business user to the personal user with the promotion text.
-    """
+@app.route('/feed', methods=['GET'])
+def user_feed():
     rsp = 'NOT FOUND.'
-    if request.method == 'GET':
+    token = request.headers.get('Authorization')
+    print(token)
+    if request.method == 'GET' and token:
         # print(request.headers)
-        rsp = get_feed_by_uid(uid,request.headers.get('Authorization'))
+        rsp = get_feed(token)
         print(rsp)
         return json.loads(rsp.text), 200
-    elif request.method == 'POST':
-        return create_transfer(request, uid), 200
     return rsp
 ############## HELPERS ##############
 def get_token():
@@ -113,7 +108,7 @@ def handle_login(request):
     except Exception as err:
         return jsonify("err when login: {}".format(err)), 400
 
-def get_feed_by_uid(uid, token):
+def get_feed(token):
     return requests.get('{S}/feed'.format(S=SERVICE_ENDPOINT), headers = {'Authorization':token})
 
 def create_transfer(request, tuid):

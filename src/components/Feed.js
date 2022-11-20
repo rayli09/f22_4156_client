@@ -1,36 +1,28 @@
 import React, {useEffect, useState} from 'react'
 import axios from "axios";
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import {Col, Container} from 'react-bootstrap'
 import Loading from './Loading'
 import Activity from './ads/Activity'
-import UserInput from './ads/UserInput';
-import InjectAdsController from './ads/InjectAdsController';
 import NoticeBanner from './NoticeBanner';
 import { END_POINT } from '../utils';
 
 const generateKey = (pre) => {
     return `${pre}_${new Date().getTime()}`;
 }
-const ManageAdsPage = (props) => {
+const Feed = (props) => {
     const [feedData, setFeedData] = useState(null)
-    const [userInput, setUserInput] = useState(null)
-    const [selectedAd, setSelectedAd] = useState(null)
     const [noticeMsg, setNoticeMsg] = useState(null)
     useEffect(() => {
         handleFetchData();
     }, [])
-    const handleInjectAd = async () => {
-        // TODO
-        return selectedAd;
-    }
+
     const handleFetchData = async () => {
+        if (!props?.userData?.token){
+            return;
+        }
         try {
-            const uid = userInput;
-            if (!uid) {
-                return;
-            }
-            axios.get(`${END_POINT}feed/${uid}`,{
+            
+            axios.get(`${END_POINT}feed`,{
                 headers: {
                     'Authorization': props?.userData?.token 
                 }
@@ -40,7 +32,6 @@ const ManageAdsPage = (props) => {
                     setNoticeMsg('Please authenticate first.')
                 } else {
                     setFeedData(rsp.data);
-                    setUserInput(uid);
                 }
 
             }).catch(function (error) {
@@ -56,26 +47,23 @@ const ManageAdsPage = (props) => {
             <Activity key={index} act={act}/>
         ))
         return (
-            <Col>
-                {activities ?? <h1>FEED with user id NOT FOUND</h1>}
-            </Col>
+            <>
+                {activities}
+            </>
         )
     }
-    const header = (userInput) => (
+    const header = (
         <>
-            <h1>Manage Ads page</h1>
+            <h1>Your Feed</h1>
             <NoticeBanner children={noticeMsg}/>
-            <h3>Showing user feed for uid {userInput}</h3>
         </>
     );
 
     return (
-        <>
-            {header(userInput)}
-            <UserInput handleOnChange={setUserInput} handleOnSubmit={handleFetchData}/>
-            <InjectAdsController handleOnChange={setSelectedAd} handleOnInject={handleInjectAd}/>
+        <Container>
+            {header}
             {feedData ? feedContent() : <Loading/>}
-        </>
+        </Container>
     )
 }
-export default ManageAdsPage
+export default Feed
