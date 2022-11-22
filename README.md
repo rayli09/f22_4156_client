@@ -1,6 +1,6 @@
 # Client for Team LGTM - Fall 22 ASE
 
-This is an application which contains a connected flask backend to a react frontend
+This is an application which contains a connected flask backend to a react frontend. It shows the personal user perspective of our service, i.e. managing personal expenses and sending money requests/transfers.
 
 ## How to build and run locally
 #### Build
