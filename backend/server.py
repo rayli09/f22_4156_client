@@ -1,3 +1,11 @@
+#
+# ********************** IMPORTANT **********************
+# 
+# some of the functions are not fully refactored due to the change we made
+# from ads manager to Venmo. Please proceed with caution.
+#
+# ********************** IMPORTANT **********************
+
 import json
 from flask import Flask, jsonify, request, session
 from flask_session import Session
@@ -5,7 +13,6 @@ import requests
 import db_service
 from flask_cors import CORS
 from flask import Response
-
 REMOTE_SERVICE_ENDPOINT = 'http://easymoneytest-env.eba-gxycxg4j.us-east-1.elasticbeanstalk.com'
 SERVICE_ENDPOINT = 'http://localhost:8080'
 
