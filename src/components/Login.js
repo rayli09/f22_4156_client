@@ -74,7 +74,7 @@ export default function Login(props) {
             <Card className="shadow">
               <Card.Body>
                 <div className="mb-3 mt-md-4">
-                  <h2 className="fw-bold mb-2 text-uppercase ">Ads Platform</h2>
+                  <h2 className="fw-bold mb-2 text-uppercase ">Venmo Platform</h2>
                   <p className=" mb-5">Please enter your login and password!</p>
                   <div className="mb-3">
                     <Form>
