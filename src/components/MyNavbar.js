@@ -18,7 +18,7 @@ const MyNavbar = (props) => {
           <Nav.Link as={Link} to="/feed">Feed</Nav.Link>
           <Nav.Link as={Link} to="/request">Request</Nav.Link>
           <Nav.Link as={Link} to="/transfer">Transfer</Nav.Link>
-          <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
+          {username && <Nav.Link as={Link} to="/profile">Profile</Nav.Link>}
          
           {/* {username ||  <Nav.Link as={Link} to="/login">Login</Nav.Link>} */}
           {username ||  <Button as={Link} to="/login">Login</Button>}

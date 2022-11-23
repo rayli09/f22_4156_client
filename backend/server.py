@@ -69,18 +69,24 @@ def manage_assets(uid):
     
     return 'NOT SUPPORTED'
 
-@app.route('/profile/<uid>')
-def my_profile(uid):
-    #TODO needs refactoring query by uid
-    method = request.method
-    if method == 'GET':
-        return db_service.query_db('select * from users where uid = ?', [uid])
-    elif method == 'POST':
-        p = request.json
-        new_p_id = db_service.insert_db('insert into users (username,ad1,ad2,ad3) values (?,?,?,?) ', 
-        [p['username'], p['ad1'], p['ad2'], p['ad3']])
-        return "{} has been created.".format(new_p_id)
-    return 'NOT SUPPORTED'
+
+@app.route('/profile', methods=['GET'])
+def my_profile():
+    token = request.headers.get('Authorization')
+    if not token:
+        return "no token provided!", 401
+    rsp = requests.get('{S}/user/me'.format(S=SERVICE_ENDPOINT), headers = {'Authorization':token})
+    payload = rsp.json()
+    # Simplify
+    account = payload['account']
+    payload['accountName'] = account['accountName']
+    payload['accountNumber'] = account['accountNumber']
+    payload['routingNumber'] = account['routingNumber']
+    payload.pop('account')
+    payload.pop('bizPromotionText')
+    payload.pop('type')
+    return payload, 200
+
 
 @app.route('/feed', methods=['GET'])
 def user_feed():
