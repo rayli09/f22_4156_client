@@ -88,6 +88,12 @@ def my_profile():
     return payload, 200
 
 
+@app.route('/search/<info>', methods=['GET'])
+def search_profiles(info):
+    rsp = requests.get('{S}/search/info/{I}'.format(S=SERVICE_ENDPOINT, I=info))
+    return rsp.json()['userProfiles'], 200
+
+
 @app.route('/feed', methods=['GET'])
 def user_feed():
     rsp = 'NOT FOUND.'
