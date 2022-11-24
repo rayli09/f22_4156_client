@@ -88,8 +88,11 @@ def my_profile():
     return payload, 200
 
 
+@app.route('/search', defaults={'info': ''}, methods=['GET'], strict_slashes=False)
 @app.route('/search/<info>', methods=['GET'])
 def search_profiles(info):
+    if not info:
+        return [], 200
     rsp = requests.get('{S}/search/info/{I}'.format(S=SERVICE_ENDPOINT, I=info))
     return rsp.json()['userProfiles'], 200
 

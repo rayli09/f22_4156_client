@@ -1,5 +1,10 @@
-import React from 'react'
+import React from 'react';
+import SearchProfiles from "./SearchProfiles";
+
 const RequestPage = () => (
-    <h1>TODO Request page</h1>
+    <div>
+        <h1>Create a Request</h1>
+        <SearchProfiles />
+    </div>
 )
 export default RequestPage

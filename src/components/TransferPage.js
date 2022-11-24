@@ -1,5 +1,10 @@
-import React from 'react'
+import React from 'react';
+import SearchProfiles from "./SearchProfiles";
+
 const TransferPage = () => (
-    <h1>TODO Transfer page</h1>
+    <div>
+        <h1>Create a Transfer</h1>
+        <SearchProfiles />
+    </div>
 )
 export default TransferPage
