@@ -22,7 +22,7 @@ export default function Login(props) {
         try {
             CLIENT.post("auth/login", payload)
             .then((rsp) => {
-                console.log(rsp);
+                // console.log(rsp);
                 if (rsp.data?.message){
                     setNotice(rsp.data);
                 } else if (rsp.data?.token) {
@@ -82,7 +82,7 @@ export default function Login(props) {
                         <Form.Label className="text-center">
                           Email address
                         </Form.Label>
-                        <Form.Control onChange={onEmail}type="email" placeholder="Enter email" />
+                        <Form.Control onChange={onEmail} type="email" placeholder="Enter email" />
                       </Form.Group>
 
                       <Form.Group
@@ -90,7 +90,7 @@ export default function Login(props) {
                         controlId="formPassword"
                       >
                         <Form.Label>Password</Form.Label>
-                        <Form.Control onChange={onPassword}type="password" placeholder="Password" />
+                        <Form.Control onChange={onPassword} type="password" placeholder="Password" />
                       </Form.Group>
                       <div className="d-grid">
                         <Button onClick={handleLogin} variant="primary" type="submit">

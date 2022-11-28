@@ -31,7 +31,7 @@ function App() {
         <Route path="/logout" element={<Logout setUserData={setUserData}/>} />
         <Route path="*" element={<Nopage />} />
       </Routes>
-      </BrowserRouter>
+    </BrowserRouter>
   
   );
 }

@@ -73,7 +73,7 @@ def manage_assets(uid):
 @app.route('/profile', methods=['GET'])
 def my_profile():
     token = request.headers.get('Authorization')
-    if not token:
+    if token == 'undefined' or not token:
         return "no token provided!", 401
     rsp = requests.get('{S}/user/me'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token})
     payload = rsp.json()
@@ -89,15 +89,16 @@ def my_profile():
 @app.route('/balance', methods=['PUT'])
 def update_balance():
     token = request.headers.get('Authorization')
-    if not token:
+    if token == 'undefined' or not token:
         return "no token provided!", 401
-    amount = int(request.json['amount'])
+    amount = float(request.json['amount'])
     if amount == 0:
         return "Invalid amount!", 400
     elif amount > 0:
+        request.json['amount'] = str(round(amount, 2))
         rsp = requests.put('{S}/user/deposit'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token}, json=request.json)
     else:
-        request.json['amount'] = str(-amount)
+        request.json['amount'] = str(round(-amount, 2))
         rsp = requests.put('{S}/user/withdraw'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token}, json=request.json)
     return rsp.json(), rsp.status_code
 
