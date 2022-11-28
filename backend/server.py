@@ -75,7 +75,7 @@ def my_profile():
     token = request.headers.get('Authorization')
     if not token:
         return "no token provided!", 401
-    rsp = requests.get('{S}/user/me'.format(S=SERVICE_ENDPOINT), headers = {'Authorization':token})
+    rsp = requests.get('{S}/user/me'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token})
     payload = rsp.json()
     # Simplify
     account = payload['account']
@@ -83,9 +83,23 @@ def my_profile():
     payload['accountNumber'] = account['accountNumber']
     payload['routingNumber'] = account['routingNumber']
     payload.pop('account')
-    payload.pop('bizPromotionText')
-    payload.pop('type')
     return payload, 200
+
+
+@app.route('/balance', methods=['PUT'])
+def update_balance():
+    token = request.headers.get('Authorization')
+    if not token:
+        return "no token provided!", 401
+    amount = int(request.json['amount'])
+    if amount == 0:
+        return "Invalid amount!", 400
+    elif amount > 0:
+        rsp = requests.put('{S}/user/deposit'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token}, json=request.json)
+    else:
+        request.json['amount'] = str(-amount)
+        rsp = requests.put('{S}/user/withdraw'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token}, json=request.json)
+    return rsp.json(), rsp.status_code
 
 
 @app.route('/search', defaults={'info': ''}, methods=['GET'], strict_slashes=False)
