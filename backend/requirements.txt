@@ -9,3 +9,4 @@ python-dotenv==0.19.2
 Werkzeug==2.0.2
 sqlite3
 requests
+Flask-Session
