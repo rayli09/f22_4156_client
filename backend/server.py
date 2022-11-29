@@ -90,6 +90,8 @@ def my_request():
      rsp = requests.post('{S}/request/create'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token}, json = request.json)
     elif method == 'GET':
      rsp = requests.get('{S}/request'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token})
+    else:
+         return 'aciton invalid', 404
     print(rsp.json())
     return rsp.json(), rsp.status_code
 
