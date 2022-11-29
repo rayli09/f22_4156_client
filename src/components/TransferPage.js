@@ -12,7 +12,6 @@ const TransferPage = (props) => {
     const onDescription = (e) => setDescription(e.target.value);
     const onCategory = (e) => setCategory(e.target.value);
     const [notice, setNotice] = useState("");
-    const [success, setSuccess] = useState("");
     const [toUid, setToUid] = useState("");
     const formRef = useRef(null);
 
@@ -36,7 +35,7 @@ const TransferPage = (props) => {
                 }),
             });
             if (res.status === 200) {
-                setSuccess("Transfer completed successfully");
+                setNotice("Transfer completed successfully");
             } else {
                 setNotice("Transfer failed due to some invalid operations");
             }
@@ -46,13 +45,11 @@ const TransferPage = (props) => {
         }
     };
 
-    const noticeBanner = (notice);
-
     return (
         <div>
             <h1>Create a Transfer</h1>
             <br/>
-            <NoticeBanner children={success || noticeBanner}/>
+            <NoticeBanner children={notice}/>
             <Card className="shadow">
                 <Card.Body>
                     <SearchProfiles handleToUid={handleToUid} currEmail={props.userData.email}/>
@@ -64,13 +61,13 @@ const TransferPage = (props) => {
                                 <Form.Group className="mb-3" controlId="formAmount">
                                     <Form.Label>Amount</Form.Label>
                                     <Form.Control onChange={onAmount}
-                                                  type="amount"
+                                                  type="number"
                                                   placeholder="Enter amount" />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="formDescription">
                                     <Form.Label>Description</Form.Label>
                                     <Form.Control onChange={onDescription}
-                                                  type="description"
+                                                  type="text"
                                                   placeholder="Enter description" />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="formCategory">
