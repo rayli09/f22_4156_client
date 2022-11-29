@@ -44,7 +44,7 @@ const TransferPage = (props) => {
     return (
         <div>
             <h1>Create a Transfer</h1>
-            <SearchProfiles handleToUid={handleToUid}/>
+            <SearchProfiles handleToUid={handleToUid} currEmail={props.userData.email}/>
             <br/>
             <div className="transfer">
                 <form onSubmit={handleSubmit}>
