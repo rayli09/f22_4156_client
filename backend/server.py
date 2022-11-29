@@ -70,7 +70,7 @@ def my_profile():
     token = request.headers.get('Authorization')
     if token == 'undefined' or not token:
         return "no token provided!", 401
-    rsp = requests.get('{S}/user/me'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token})
+    rsp = requests.get('{S}/user/me'.format(S=REMOTE_SERVICE_ENDPOINT), headers={'Authorization': token})
     payload = rsp.json()
     # Simplify
     account = payload['account']
@@ -87,9 +87,9 @@ def my_request():
         return "no token provided!", 401
     method = request.method
     if method == 'POST':
-     rsp = requests.post('{S}/request/create'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token}, json = request.json)
+     rsp = requests.post('{S}/request/create'.format(S=REMOTE_SERVICE_ENDPOINT), headers={'Authorization': token}, json = request.json)
     elif method == 'GET':
-     rsp = requests.get('{S}/request'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token})
+     rsp = requests.get('{S}/request'.format(S=REMOTE_SERVICE_ENDPOINT), headers={'Authorization': token})
     else:
          return 'aciton invalid', 404
     print(rsp.json())
@@ -101,9 +101,9 @@ def request_accept(action):
     if not token:
         return "no token provided!", 401
     if action == 'accept':
-     rsp = requests.put('{S}/request/accept'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token}, json = request.json)
+     rsp = requests.put('{S}/request/accept'.format(S=REMOTE_SERVICE_ENDPOINT), headers={'Authorization': token}, json = request.json)
     elif action == 'decline':
-     rsp = requests.put('{S}/request/decline'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token}, json = request.json)
+     rsp = requests.put('{S}/request/decline'.format(S=REMOTE_SERVICE_ENDPOINT), headers={'Authorization': token}, json = request.json)
     else:
         return 'aciton invalid', 404
     print("response:",rsp.text)
@@ -120,10 +120,10 @@ def update_balance():
         return "Invalid amount!", 400
     elif amount > 0:
         request.json['amount'] = str(round(amount, 2))
-        rsp = requests.put('{S}/user/deposit'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token}, json=request.json)
+        rsp = requests.put('{S}/user/deposit'.format(S=REMOTE_SERVICE_ENDPOINT), headers={'Authorization': token}, json=request.json)
     else:
         request.json['amount'] = str(round(-amount, 2))
-        rsp = requests.put('{S}/user/withdraw'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token}, json=request.json)
+        rsp = requests.put('{S}/user/withdraw'.format(S=REMOTE_SERVICE_ENDPOINT), headers={'Authorization': token}, json=request.json)
     return rsp.json(), rsp.status_code
 
 
@@ -132,7 +132,7 @@ def update_balance():
 def search_profiles(info):
     if not info:
         return [], 200
-    rsp = requests.get('{S}/search/info/{I}'.format(S=SERVICE_ENDPOINT, I=info))
+    rsp = requests.get('{S}/search/info/{I}'.format(S=REMOTE_SERVICE_ENDPOINT, I=info))
     return rsp.json()['userProfiles'], 200
 
 
@@ -155,7 +155,7 @@ def make_transfer():
     if not token:
         return "no token provided!", 401
     request_json = json.loads(request.data.decode())
-    rsp = requests.post('{S}/transfer/create'.format(S=SERVICE_ENDPOINT),
+    rsp = requests.post('{S}/transfer/create'.format(S=REMOTE_SERVICE_ENDPOINT),
                         json=request_json, headers={'Authorization': token})
     if rsp.status_code == 201:
         return rsp.json(), 200
@@ -171,7 +171,7 @@ def get_token():
 
 def handle_register(request):
     # TODO make sure userType is business
-    rsp = requests.post('{S}/auth/register'.format(S=SERVICE_ENDPOINT), json=request.json)
+    rsp = requests.post('{S}/auth/register'.format(S=REMOTE_SERVICE_ENDPOINT), json=request.json)
     # use json.loads to parse json properly
     return json.loads(rsp.text)
 
@@ -179,7 +179,7 @@ def handle_register(request):
 def handle_login(request):
     req = request.json
     try:
-        rsp = requests.post('{S}/auth/login'.format(S=SERVICE_ENDPOINT), json=req)
+        rsp = requests.post('{S}/auth/login'.format(S=REMOTE_SERVICE_ENDPOINT), json=req)
         token = rsp.text
         if len(token) == 0:
             return jsonify("Failed to validate"), 400
@@ -190,7 +190,7 @@ def handle_login(request):
 
 
 def get_feed(token):
-    return requests.get('{S}/feed'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token})
+    return requests.get('{S}/feed'.format(S=REMOTE_SERVICE_ENDPOINT), headers={'Authorization': token})
 
 
 def is_user_logged_in():
