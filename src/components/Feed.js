@@ -6,41 +6,27 @@ import Activity from './ads/Activity'
 import NoticeBanner from './NoticeBanner';
 import { END_POINT } from '../utils';
 
-const generateKey = (pre) => {
-    return `${pre}_${new Date().getTime()}`;
-}
 const Feed = (props) => {
     const [feedData, setFeedData] = useState(null)
     const [noticeMsg, setNoticeMsg] = useState(null)
     useEffect(() => {
         handleFetchData();
     }, [])
-
     const handleFetchData = async () => {
         if (!props?.userData?.token){
             return;
         }
-        try {
-            
-            axios.get(`${END_POINT}feed`,{
-                headers: {
-                    'Authorization': props?.userData?.token 
-                }
-            }).then((rsp) => {
-                console.log(rsp)
-                if (rsp.data?.url) {
-                    setNoticeMsg('Please authenticate first.')
-                } else {
-                    setFeedData(rsp.data);
-                }
-
-            }).catch(function (error) {
-                console.log(error)
-                setNoticeMsg("error when fetching feed.");      
-            })
-        } catch (err) {
-            console.log(err)
-        }
+        axios.get(`${END_POINT}feed`,{
+            headers: {
+                'Authorization': props?.userData?.token 
+            }
+        }).then((rsp) => {
+            console.log(rsp)
+            setFeedData(rsp.data);
+        }).catch(function (error) {
+            console.log(error)
+            setNoticeMsg("error when fetching feed.");      
+        })
     }
     const feedContent = () => {
         const activities = feedData?.activities?.map((act, index) => (
@@ -52,16 +38,10 @@ const Feed = (props) => {
             </>
         )
     }
-    const header = (
-        <>
-            <h1>Your Feed</h1>
-            <NoticeBanner children={noticeMsg}/>
-        </>
-    );
-
     return (
         <Container>
-            {header}
+            <h1>Your Feed</h1>
+            <NoticeBanner children={noticeMsg}/>
             {feedData ? feedContent() : <Loading/>}
         </Container>
     )

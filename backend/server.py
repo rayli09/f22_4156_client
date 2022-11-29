@@ -23,14 +23,6 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-
-# @app.before_request
-# def check_login():
-#     print(request.headers.get('Authorization'))
-#     print(request.method)
-#     if request.method != 'OPTIONS' or (request.endpoint != 'auth' and request.headers.get('Authorization') is None):
-#         return jsonify({'url' : '/auth', 'loggedin': 'false'}), 401
-
 @app.route('/whoami', methods=['GET'])
 def whoami():
     # return current user profile once logged in
@@ -39,8 +31,6 @@ def whoami():
 
 @app.route('/auth/<action>', methods=['POST', 'OPTIONS'])
 def auth(action):
-    # if is_user_logged_in():
-    #     return "Already logged in"
     if request.method != 'POST':
         return "auth only supports post"
     if action == 'register':
