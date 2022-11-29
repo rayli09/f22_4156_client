@@ -24,7 +24,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/feed" element={<Feed userData={userData}/>} />
         <Route path="/request" element={<RequestPage userData={userData}/>} />
-        <Route path="/transfer" element={<TransferPage />} />
+        <Route path="/transfer" element={<TransferPage userData={userData} />} />
         <Route path="/profile" element={<UserProfilePage userData={userData} />} />
         <Route path="/login" element={<Login userData={userData} setUserData={setUserData}/>} />
         <Route path="/signup" element={<Signup userData={userData}/>} />
