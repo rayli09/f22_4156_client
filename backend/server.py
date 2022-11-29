@@ -119,7 +119,7 @@ def update_balance():
         rsp = requests.put('{S}/user/deposit'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token}, json=request.json)
     else:
         request.json['amount'] = str(round(-amount, 2))
-        rsp = requests.put('{S}/user/withdraw'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token})
+        rsp = requests.put('{S}/user/withdraw'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token}, json=request.json)
     return rsp.json(), rsp.status_code
 
 
