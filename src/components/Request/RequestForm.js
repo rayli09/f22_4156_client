@@ -86,8 +86,8 @@ export default function RequestForm(props) {
                         className="mb-3"
                         controlId="formCategory"
                       >
-                        Category:
-                        <select value={category} onChange={onCategory}>
+                        <Form.Label>Category</Form.Label>
+                        <Form.Select value={category} onChange={onCategory}>
                             <option value="FOOD">Food</option>
                             <option value="TRAVEL">Travel</option>
                             <option value="PARTY">Party</option>
@@ -98,7 +98,7 @@ export default function RequestForm(props) {
                             <option value="SPORT">Sport</option>
                             <option value="VIDEO_GAME">Video Game</option>
                             <option value="TAXI">Taxi</option>
-                        </select>
+                        </Form.Select>
                       </Form.Group>
 
                       <div className="d-grid">
