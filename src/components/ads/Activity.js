@@ -20,9 +20,11 @@ const Activity = (props) => {
         ${amt}
         </Badge> : null
     )
+    const timestamp = (act?.lastUpdateTime.replace(/T/, ' ').replace(/\..+/, ''));     // delete the dot and everything after);
     return (
             <>
             <Card>
+            <Card.Header>{timestamp}</Card.Header>
             <Card.Title>
             {userType(act?.fromType)}
             To
