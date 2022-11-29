@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import NoticeBanner from "../NoticeBanner";
 import SearchProfiles from "../SearchProfiles";
+import { END_POINT } from "../../utils";
 
 export default function RequestForm(props) {
     const [id, setId] = useState();
@@ -27,7 +28,7 @@ export default function RequestForm(props) {
             "category" : category
         }
         try {
-            axios.post(`http://127.0.0.1:5000/request`, payload, {headers: {
+            axios.post(`${END_POINT}request`, payload, {headers: {
                 'Authorization': props?.userData?.token 
             }})
             .then((rsp) => {

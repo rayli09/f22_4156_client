@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-
+import { END_POINT } from '../../utils';
 
 const RequestEntry = (props) => {
     const request = props?.request
@@ -16,7 +16,7 @@ const RequestEntry = (props) => {
             "requestid" : request?.transactionId
         }
         try {
-            axios.put(`http://127.0.0.1:5000/request/accept`, payload, {headers: {
+            axios.put(`${END_POINT}request/accept`, payload, {headers: {
                 'Authorization': props?.userData?.token 
             }})
             .then((rsp) => {
@@ -38,7 +38,7 @@ const RequestEntry = (props) => {
             "requestid" : request?.transactionId
         }
         try {
-            axios.put(`http://127.0.0.1:5000/request/decline`, payload, {headers: {
+            axios.put(`${END_POINT}request/decline`, payload, {headers: {
                 'Authorization': props?.userData?.token 
             }})
             .then((rsp) => {

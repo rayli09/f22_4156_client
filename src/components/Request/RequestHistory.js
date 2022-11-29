@@ -30,7 +30,7 @@ export default function RequestHistory(props) {
         }
         try {
             
-            axios.get(`http://127.0.0.1:5000/request`,{
+            axios.get(`${END_POINT}request`,{
                 headers: {
                     'Authorization': props?.userData?.token 
                 }
