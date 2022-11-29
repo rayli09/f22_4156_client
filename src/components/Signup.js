@@ -28,7 +28,7 @@ export default function Signup(props) {
             "accountNumber" : accountNumber,
             "routingNumber" : routingNumber,
             "phone" : phone,
-            "userType" : "business"
+            "userType" : "personal"
         }
         try {
             axios.post(`http://127.0.0.1:5000/auth/register`, payload)
@@ -38,7 +38,7 @@ export default function Signup(props) {
                     setNotice(rsp.data);
                 } else {
                     // success register
-                    setSuccess(`Biz User ${rsp.data?.id} is created!`);
+                    setSuccess(`Personal User ${rsp.data?.id} is created!`);
                 }
 
             })
@@ -121,7 +121,7 @@ export default function Signup(props) {
                     </Form>
                     <div className="mt-3">
                       <p className="mb-0  text-center">
-                        Already havv an account??{" "}
+                        Already have an account??{" "}
                         <a href="/login" className="text-primary fw-bold">
                           Log In
                         </a>
