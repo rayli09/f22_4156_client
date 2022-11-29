@@ -135,17 +135,14 @@ def make_transfer():
     token = request.headers.get('Authorization')
     if not token:
         return "no token provided!", 401
-    if request.method == 'POST':
-        request_json = json.loads(request.data.decode())
-        rsp = requests.post('{S}/transfer/create'.format(S=SERVICE_ENDPOINT),
-                            json=request_json, headers={'Authorization': token})
-        if rsp.status_code == 201:
-            return rsp.json(), 200
-        else:
-            print(rsp.text)
-            return rsp.text, rsp.status_code
+    request_json = json.loads(request.data.decode())
+    rsp = requests.post('{S}/transfer/create'.format(S=SERVICE_ENDPOINT),
+                        json=request_json, headers={'Authorization': token})
+    if rsp.status_code == 201:
+        return rsp.json(), 200
     else:
-        return "invalid method", 400
+        print(rsp.text)
+        return rsp.text, rsp.status_code
 
 
 # ********************** HELPERS **********************
