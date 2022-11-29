@@ -43,6 +43,7 @@ const SearchProfiles = ({handleToUid, currEmail}) => {
                 onInputChange={handleInputChange}
                 onChange={handleChange}
             />
+            <br/>
             {selectedValue && (
                 <div>
                     <h3>Selected User:</h3>
