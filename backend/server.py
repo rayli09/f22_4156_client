@@ -102,6 +102,8 @@ def request_accept(action):
      rsp = requests.put('{S}/request/accept'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token}, json = request.json)
     elif action == 'decline':
      rsp = requests.put('{S}/request/decline'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token}, json = request.json)
+    else:
+        return 'aciton invalid', 404
     print("response:",rsp.text)
     return rsp.text, rsp.status_code
 
