@@ -34,9 +34,7 @@ export default function RequestForm(props) {
             .then((rsp) => {
                 console.log(rsp)
                 console.log("request id:", rsp.data?.id)
-                //clear form
-                //fire a notification
-                // setProfile(rsp.data);
+                window.location.reload();
             }).catch((error) => {
                 console.log(error) 
             })
