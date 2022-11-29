@@ -3,7 +3,7 @@ import AsyncSelect from 'react-select/async';
 import CLIENT from '../CLIENT';
 
 /* Simple example */
-const SearchProfiles = () => {
+const SearchProfiles = (props, {handleToUid, currEmail}) => {
     const [inputValue, setValue] = useState('');
     const [selectedValue, setSelectedValue] = useState(null);
  
