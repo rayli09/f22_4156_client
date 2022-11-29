@@ -80,6 +80,35 @@ def my_profile():
     payload.pop('account')
     return payload, 200
 
+@app.route('/request', methods=['POST', 'GET'])
+def my_request():
+    token = request.headers.get('Authorization')
+    if not token:
+        return "no token provided!", 401
+    method = request.method
+    if method == 'POST':
+     rsp = requests.post('{S}/request/create'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token}, json = request.json)
+    elif method == 'GET':
+     rsp = requests.get('{S}/request'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token})
+    else:
+         return 'aciton invalid', 404
+    print(rsp.json())
+    return rsp.json(), rsp.status_code
+
+@app.route('/request/<action>', methods=['PUT'])
+def request_accept(action):
+    token = request.headers.get('Authorization')
+    if not token:
+        return "no token provided!", 401
+    if action == 'accept':
+     rsp = requests.put('{S}/request/accept'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token}, json = request.json)
+    elif action == 'decline':
+     rsp = requests.put('{S}/request/decline'.format(S=SERVICE_ENDPOINT), headers={'Authorization': token}, json = request.json)
+    else:
+        return 'aciton invalid', 404
+    print("response:",rsp.text)
+    return rsp.text, rsp.status_code
+
 
 @app.route('/balance', methods=['PUT'])
 def update_balance():

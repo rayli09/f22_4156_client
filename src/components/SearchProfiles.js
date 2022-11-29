@@ -3,7 +3,7 @@ import AsyncSelect from 'react-select/async';
 import CLIENT from '../CLIENT';
 
 /* Simple example */
-const SearchProfiles = ({handleToUid, currEmail}) => {
+const SearchProfiles = ({handleSelectValue, handleToUid, currEmail}) => {
     const [inputValue, setValue] = useState('');
     const [selectedValue, setSelectedValue] = useState(null);
  
@@ -15,7 +15,12 @@ const SearchProfiles = ({handleToUid, currEmail}) => {
     // handle selection
     const handleChange = value => {
         setSelectedValue(value);
-        handleToUid(value.uid);
+        if (handleToUid !== undefined){
+            handleToUid(value.uid);
+        }
+        if (handleSelectValue !== undefined){
+            handleSelectValue(value);
+        }
     };
 
     const getData = async (inputValue) => {
