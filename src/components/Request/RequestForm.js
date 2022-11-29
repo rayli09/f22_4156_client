@@ -86,8 +86,19 @@ export default function RequestForm(props) {
                         className="mb-3"
                         controlId="formCategory"
                       >
-                        <Form.Label>Category</Form.Label>
-                        <Form.Control  onChange={onCategory} type="category" placeholder="Category" />
+                        Category:
+                        <select value={category} onChange={onCategory}>
+                            <option value="FOOD">Food</option>
+                            <option value="TRAVEL">Travel</option>
+                            <option value="PARTY">Party</option>
+                            <option value="PHONE">Phone</option>
+                            <option value="INTERNET">Internet</option>
+                            <option value="RENT">Rent</option>
+                            <option value="SHOPPING">Shopping</option>
+                            <option value="SPORT">Sport</option>
+                            <option value="VIDEO_GAME">Video Game</option>
+                            <option value="TAXI">Taxi</option>
+                        </select>
                       </Form.Group>
 
                       <div className="d-grid">
