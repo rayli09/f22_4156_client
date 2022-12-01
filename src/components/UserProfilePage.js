@@ -67,6 +67,7 @@ const UserProfilePage = (props) => {
                         { profile === null ? "loading" : (
                             <>
                                 <ListGroup>
+                                    <ListGroup.Item>User ID: {profile.id}</ListGroup.Item>
                                     <ListGroup.Item>Email: {profile.email}</ListGroup.Item>
                                     {profile.phone && <ListGroup.Item>Phone: {profile.phone}</ListGroup.Item>}
                                     {profile.address && <ListGroup.Item>Address: {profile.address}</ListGroup.Item>}
