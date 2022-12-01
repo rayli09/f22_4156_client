@@ -7,9 +7,9 @@ import { END_POINT } from "../../utils";
 
 export default function RequestForm(props) {
     const [id, setId] = useState();
-    const [amount, setAmount] = useState();
+    const [amount, setAmount] = useState(0.);
     const [description, setDescription] = useState();
-    const [category, setCategory] = useState();
+    const [category, setCategory] = useState("FOOD");
 
     const [phone, setPhone] = useState();
     const [notice, setNotice] = useState();
@@ -32,7 +32,7 @@ export default function RequestForm(props) {
                 'Authorization': props?.userData?.token 
             }})
             .then((rsp) => {
-                console.log(rsp)
+                // console.log(rsp)
                 console.log("request id:", rsp.data?.id)
                 window.location.reload();
             }).catch((error) => {
@@ -59,18 +59,18 @@ export default function RequestForm(props) {
           <Col >
             <div className="border border-3 border-primary"></div>
             <Card className="shadow">
-            <SearchProfiles handleSelectValue = {setId}/>
               <Card.Body>
                 <div className="mb-3 mt-md-4">
                   <h2 className="fw-bold mb-2 text-uppercase ">Send Request</h2>
                   <p className=" mb-5">Please enter your request!</p>
                   <div className="mb-3">
                     <Form>
+                      <SearchProfiles handleSelectValue={setId} currEmail={props.userData.email}/>
                       <Form.Group className="mb-3" controlId="formAmount">
                         <Form.Label className="text-center">
                           Amount 
                         </Form.Label>
-                        <Form.Control onChange={onAmount} type="amount" placeholder="Amount" />
+                        <Form.Control onChange={onAmount} type="number" min="0" step="0.01" placeholder="Amount" />
                       </Form.Group>
 
                       <Form.Group
@@ -100,7 +100,7 @@ export default function RequestForm(props) {
                       </Form.Group>
 
                       <div className="d-grid">
-                        <Button onClick={handleSendRequest}variant="primary" type="submit">
+                        <Button onClick={handleSendRequest} variant="primary" type="submit" disabled={!id || amount < 0.01 || !category}>
                           Send Request
                         </Button>
                       </div>

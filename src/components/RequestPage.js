@@ -10,7 +10,6 @@ const RequestPage = (props) => {
 
     return(
         <Container>
-            <h1>Create a Request</h1>
             <NoticeBanner />
             <Row>
                 <Col>

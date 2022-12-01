@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
-import Form from 'react-bootstrap/Form';
+import { Card, Container, Form, ListGroup }  from 'react-bootstrap';
 import InputGroup from 'react-bootstrap/InputGroup';
 import CLIENT from '../CLIENT';
+import NoticeBanner from "./NoticeBanner";
 
 const UserProfilePage = (props) => {
     const [profile, setProfile] = useState(null);
     const [amount, setAmount] = useState(0.);
     const onAmount = (e) => setAmount(e.target.value);
+    const [notice, setNotice] = useState("");
     
     useEffect(() => {
         if (profile === null) {
@@ -42,7 +44,9 @@ const UserProfilePage = (props) => {
                 }
             })
             .then(rsp => {
-                window.location.reload();
+                setProfile(null);
+                setAmount(0.);
+                setNotice(isDeposit ? "Deposited successfully!" : "Withdrew successfully!");
             }).catch(err => {
                 console.log(err)
             })
@@ -54,55 +58,65 @@ const UserProfilePage = (props) => {
     const isTooSmall = amount < 0.01;
 
     return (
-        <div>
-            <h1>My Profile</h1>
-            { profile === null ? "loading" : (
-                <div>
-                    <h3>Email: {profile.email}</h3>
-                    <h3>Phone: {profile.phone}</h3>
-                    <h3>Address: {profile.address}</h3>
-                    <h3>User Type: {profile.type.toLowerCase()}</h3>
-                    <h3>Account Name: {profile.accountName}</h3>
-                    <h3>Account Number: {profile.accountNumber}</h3>
-                    <h3>Routing Number: {profile.routingNumber}</h3>
-                    <h3>Balance: ${profile.balance.toFixed(2)}</h3>
-                    <ButtonToolbar className="mb-3" aria-label="Toolbar with Button groups">
-                        <InputGroup>
-                            <InputGroup.Text id="btnGroupAddon">$</InputGroup.Text>
-                            <Form.Control
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                placeholder="Enter the amount here"
-                                aria-label="Amount form"
-                                aria-describedby="btnGroupAddon"
-                                onChange={onAmount}
-                            />
-                        </InputGroup>
-                        <ButtonGroup className="me-2" aria-label="Deposit btn group">
-                            <Button 
-                                variant="secondary" 
-                                disabled={isTooSmall} 
-                                id="depositBtn"
-                                onClick={handleBalanceUpdateSubmission}
-                            >
-                                Deposit
-                            </Button>
-                        </ButtonGroup>
-                        <ButtonGroup className="me-2" aria-label="Withdraw btn group">
-                            <Button 
-                                variant="secondary" 
-                                disabled={isTooSmall || amount > parseFloat(profile.balance.toFixed(2))}
-                                id="withdrawBtn"
-                                onClick={handleBalanceUpdateSubmission}
-                            >
-                                Withdraw
-                            </Button>
-                        </ButtonGroup>
-                    </ButtonToolbar>
-                </div>
-            )}
-        </div>
+        <Container>
+            <NoticeBanner children={notice}/>
+            <div className="border border-3 border-primary" />
+            <Card className="shadow">
+                <Card.Body>
+                    <div className="mb-3 mt-md-4">
+                        <h2 className="fw-bold mb-2 text-uppercase">My Profile</h2>
+                        { profile === null ? "loading" : (
+                            <>
+                                <ListGroup>
+                                    <ListGroup.Item>Email: {profile.email}</ListGroup.Item>
+                                    {profile.phone && <ListGroup.Item>Phone: {profile.phone}</ListGroup.Item>}
+                                    {profile.address && <ListGroup.Item>Address: {profile.address}</ListGroup.Item>}
+                                    <ListGroup.Item>User Type: {profile.type.toLowerCase()}</ListGroup.Item>
+                                    <ListGroup.Item>Account Name: {profile.accountName}</ListGroup.Item>
+                                    <ListGroup.Item>Account Number: {profile.accountNumber}</ListGroup.Item>
+                                    <ListGroup.Item>Routing Number: {profile.routingNumber}</ListGroup.Item>
+                                    <ListGroup.Item>Balance: ${profile.balance.toFixed(2)}</ListGroup.Item>
+                                </ListGroup>
+                                <ButtonToolbar className="mb-3" aria-label="Toolbar with Button groups">
+                                    <InputGroup>
+                                        <InputGroup.Text id="btnGroupAddon">$</InputGroup.Text>
+                                        <Form.Control
+                                            type="number"
+                                            step="0.01"
+                                            min="0"
+                                            placeholder="Enter the amount here"
+                                            aria-label="Amount form"
+                                            aria-describedby="btnGroupAddon"
+                                            onChange={onAmount}
+                                        />
+                                    </InputGroup>
+                                    <ButtonGroup className="me-2" aria-label="Deposit btn group">
+                                        <Button 
+                                            variant="secondary" 
+                                            disabled={isTooSmall} 
+                                            id="depositBtn"
+                                            onClick={handleBalanceUpdateSubmission}
+                                        >
+                                            Deposit
+                                        </Button>
+                                    </ButtonGroup>
+                                    <ButtonGroup className="me-2" aria-label="Withdraw btn group">
+                                        <Button 
+                                            variant="secondary" 
+                                            disabled={isTooSmall || amount > parseFloat(profile.balance.toFixed(2))}
+                                            id="withdrawBtn"
+                                            onClick={handleBalanceUpdateSubmission}
+                                        >
+                                            Withdraw
+                                        </Button>
+                                    </ButtonGroup>
+                                </ButtonToolbar>
+                            </>
+                        )}
+                    </div>
+                </Card.Body>
+            </Card>
+        </Container>
     )
 }
 export default UserProfilePage

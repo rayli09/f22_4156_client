@@ -1,8 +1,17 @@
 import { useState } from 'react';
 import AsyncSelect from 'react-select/async';
 import CLIENT from '../CLIENT';
+import { Card, ListGroup, Form } from "react-bootstrap";
 
-/* Simple example */
+const optionLabel = ({ accountName, email, phone }) => (
+    <div style={{ display: "flex" }}>
+      <div>{accountName}</div>
+      <div style={{ marginLeft: "10px", color: "#aaa" }}>
+        {email} {phone}
+      </div>
+    </div>
+);
+
 const SearchProfiles = ({handleSelectValue, handleToUid, currEmail}) => {
     const [inputValue, setValue] = useState('');
     const [selectedValue, setSelectedValue] = useState(null);
@@ -36,29 +45,32 @@ const SearchProfiles = ({handleSelectValue, handleToUid, currEmail}) => {
     };
     
     return (
-        <div>
-            <h2>Search for a user</h2>
+        <Form.Group className="mb-3">
+            <Form.Label className="text-center">Search for a user</Form.Label>
             <AsyncSelect
                 cacheOptions
                 defaultOptions
                 value={selectedValue}
-                getOptionLabel={e => e.email}
-                getOptionValue={e => e.accountName}
+                getOptionValue={e => e.uid}
                 loadOptions={loadOptions}
                 onInputChange={handleInputChange}
                 onChange={handleChange}
+                formatOptionLabel={optionLabel}
             />
-            <br/>
             {selectedValue && (
-                <div>
-                    <h3>Selected User:</h3>
-                    <h5>Email: {selectedValue.email}</h5>
-                    <h5>Name: {selectedValue.accountName}</h5>
-                    <h5>Phone: {selectedValue.phone}</h5>
-                    <h5>Account Type: {selectedValue.userType}</h5>
-                </div>
+                <Card className="shadow">
+                    <Card.Body>
+                        <ListGroup>
+                            <ListGroup.Item>User ID: {selectedValue.uid}</ListGroup.Item>
+                            <ListGroup.Item>Name: {selectedValue.accountName}</ListGroup.Item>
+                            <ListGroup.Item>User Type: {selectedValue.userType.toLowerCase()}</ListGroup.Item>
+                            <ListGroup.Item>Email: {selectedValue.email}</ListGroup.Item>
+                            {selectedValue.phone && <ListGroup.Item>Phone: {selectedValue.phone}</ListGroup.Item>}
+                        </ListGroup>
+                    </Card.Body>
+                </Card>
             )}
-        </div>
+        </Form.Group>
     );
 };
 
