@@ -83,7 +83,7 @@ const RequestEntry = (props) => {
             
             <>
             <Col>
-            Description: {request?.description || 'None'}
+            Description: {request?.desc || 'None'}
             </Col>
             <Col>
             Category: {request?.category || 'None'}
