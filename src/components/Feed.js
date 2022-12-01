@@ -12,6 +12,7 @@ const Feed = (props) => {
     useEffect(() => {
         handleFetchData();
     }, [])
+    
     const handleFetchData = async () => {
         if (!props?.userData?.token){
             return;
@@ -37,6 +38,9 @@ const Feed = (props) => {
                 {activities.length == 0 ? 'Your feed is empty. Start making a transfer or request!' : activities}
             </>
         )
+    }
+    if (!props?.userData?.token) {
+        return "Please log in first!"
     }
     return (
         <Container>

@@ -15,6 +15,9 @@ const TransferPage = (props) => {
     const [toUid, setToUid] = useState("");
     const formRef = useRef(null);
 
+    if (!props?.userData?.token) {
+        return "Please log in first!"
+    }
     const handleToUid = (toUid) => {
         setToUid(toUid)
     }

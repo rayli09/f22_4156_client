@@ -7,7 +7,9 @@ import RequestForm from './Request/RequestForm';
 import RequestHistory from './Request/RequestHistory';
 
 const RequestPage = (props) => {
-
+    if (!props?.userData?.token) {
+        return "Please log in first!"
+    }
     return(
         <Container>
             <NoticeBanner />
