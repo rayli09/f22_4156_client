@@ -57,9 +57,9 @@ export default function Signup(props) {
     );
   return (
     <div>
+    <Container>
     <NoticeBanner children={success || noticeBanner}/>
     {props?.userData == null ? 
-      <Container>
         <Row className="vh-100 d-flex justify-content-center align-items-center">
           <Col md={8} lg={6} xs={12}>
             <div className="border border-3 border-primary"></div>
@@ -121,7 +121,7 @@ export default function Signup(props) {
                     </Form>
                     <div className="mt-3">
                       <p className="mb-0  text-center">
-                        Already have an account??{" "}
+                        Already have an account?{" "}
                         <a href="/login" className="text-primary fw-bold">
                           Log In
                         </a>
@@ -133,8 +133,8 @@ export default function Signup(props) {
             </Card>
           </Col>
         </Row>
-      </Container>
     : <>You are already logged in.</>}
+    </Container>
     </div>
   );
 }
