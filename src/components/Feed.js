@@ -12,7 +12,6 @@ const Feed = (props) => {
     useEffect(() => {
         handleFetchData();
     }, [])
-    
     const handleFetchData = async () => {
         if (!props?.userData?.token){
             return;

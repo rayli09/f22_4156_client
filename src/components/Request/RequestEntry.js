@@ -41,9 +41,7 @@ const RequestEntry = (props) => {
     }
     const toastMsg = (msg && <Toast>
         <Toast.Header>
-          <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
           <strong className="me-auto">Venmo Faker</strong>
-          {/* <small>11 mins ago</small> */}
         </Toast.Header>
         <Toast.Body>{msg}</Toast.Body>
       </Toast>)
