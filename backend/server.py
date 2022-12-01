@@ -140,12 +140,12 @@ def search_profiles(info):
 def user_feed():
     rsp = 'NOT FOUND.'
     token = request.headers.get('Authorization')
-    if request.method == 'GET' and token:
+    if token and token != 'undefined':
         # print(request.headers)
         rsp = get_feed(token)
-        print(rsp)
+        # print(rsp)
         return json.loads(rsp.text), 200
-    return rsp
+    return rsp, 401
 
 
 @app.route('/transfer/create', methods=['POST'])
@@ -180,12 +180,12 @@ def handle_login(request):
     try:
         rsp = requests.post('{S}/auth/login'.format(S=REMOTE_SERVICE_ENDPOINT), json=req)
         token = rsp.text
-        if len(token) == 0:
-            return jsonify("Failed to validate"), 400
+        if len(token) == 0 or rsp.status_code != 200:
+            return jsonify("Please double check your email and password!"), 401
         session['token'] = token
         return jsonify({"token": token}), 200
     except Exception as err:
-        return jsonify("err when login: {}".format(err)), 400
+        return jsonify("err when login: {}".format(err)), 401
 
 
 def get_feed(token):
