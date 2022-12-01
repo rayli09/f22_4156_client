@@ -88,21 +88,21 @@ export default function Signup(props) {
                         className="mb-3"
                         controlId="formAccountName"
                       >
-                        <Form.Label>Account Name</Form.Label>
+                        <Form.Label>Account Name(String)</Form.Label>
                         <Form.Control  onChange={onAccountName} type="accountName" placeholder="Account Name" />
                       </Form.Group>
                       <Form.Group
                         className="mb-3"
                         controlId="formAccountNumber"
                       >
-                        <Form.Label>Account Number</Form.Label>
+                        <Form.Label>Account Number(12-17 digits)</Form.Label>
                         <Form.Control  onChange={onAccountNumber} type="accountNumber" placeholder="Account Number" />
                       </Form.Group>
                       <Form.Group
                         className="mb-3"
                         controlId="formRoutingNumber"
                       >
-                        <Form.Label>Routing Number</Form.Label>
+                        <Form.Label>Routing Number(9 digits)</Form.Label>
                         <Form.Control  onChange={onRoutingNumber} type="routingNumber" placeholder="Routing Number" />
                       </Form.Group>
                       <Form.Group

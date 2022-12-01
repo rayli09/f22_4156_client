@@ -5,12 +5,14 @@ import NoticeBanner from "../NoticeBanner";
 import SearchProfiles from "../SearchProfiles";
 import RequestEntry from "./RequestEntry";
 import { END_POINT } from "../../utils"; 
+import CLIENT from "../../CLIENT";
 
 export default function RequestHistory(props) {
     const [id, setId] = useState();
     const [amount, setAmount] = useState();
     const [description, setDescription] = useState();
     const [category, setCategory] = useState();
+    const [profile, setProfile] = useState(JSON.parse(localStorage.getItem("profile")) || null);
 
     const [entries, setEntries] = useState();
     const [notice, setNotice] = useState();
@@ -22,6 +24,16 @@ export default function RequestHistory(props) {
 
     useEffect(() => {
         handleFetchData();
+        CLIENT.get("profile", {
+            headers: {
+                'Authorization': props?.userData?.token 
+            }
+        }).then((rsp) => {
+            setProfile(rsp.data);
+            localStorage.setItem("profile", JSON.stringify(rsp.data));
+        }).catch((error) => {
+            console.log(error) 
+        })
     }, [])
 
     const handleFetchData = async () => {
@@ -55,7 +67,7 @@ export default function RequestHistory(props) {
         console.log(entries)
         const entryList = entries?.map((request, index) => (
             // console.log(request) && 
-            (request.status == "TRANS_PENDING") ? <RequestEntry userData={props?.userData} key={index} request={request} /> : ""
+            (request.status == "TRANS_PENDING") ? <RequestEntry profile={profile} userData={props?.userData} key={index} request={request} /> : ""
         ))
         return (
             <>

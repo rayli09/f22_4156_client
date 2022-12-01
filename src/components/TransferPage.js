@@ -15,6 +15,9 @@ const TransferPage = (props) => {
     const [toUid, setToUid] = useState("");
     const formRef = useRef(null);
 
+    if (!props?.userData?.token) {
+        return "Please log in first!"
+    }
     const handleToUid = (toUid) => {
         setToUid(toUid)
     }
@@ -48,8 +51,7 @@ const TransferPage = (props) => {
 
     return (
         <Container>
-            <NoticeBanner children={notice}/>
-            <div className="border border-3 border-primary" />
+            <NoticeBanner children={notice}/>            
             <Card className="shadow">
                 <Card.Body>
                     <div className="mb-3 mt-md-4">

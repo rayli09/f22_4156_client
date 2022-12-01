@@ -34,15 +34,20 @@ const Feed = (props) => {
         ))
         return (
             <>
-                {activities}
+                {activities.length == 0 ? 'Your feed is empty. Start making a transfer or request!' : activities}
             </>
         )
     }
+    if (!props?.userData?.token) {
+        return "Please log in first!"
+    }
     return (
         <Container>
+            <Col md={6}>
             <h1>Your Feed</h1>
             <NoticeBanner children={noticeMsg}/>
             {feedData ? feedContent() : <Loading/>}
+            </Col>
         </Container>
     )
 }

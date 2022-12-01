@@ -1,12 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Card from 'react-bootstrap/Card';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { END_POINT } from '../../utils';
+import { Toast } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
+import { useSearchParams } from 'react-router-dom';
 
 const RequestEntry = (props) => {
     const request = props?.request
+    const profile = props?.profile
+    const [msg, setMsg] = useState();
+    const [visible, setVisible] = useState("visible");
 
     const handleAccept = async (e) => {
         e.preventDefault();
@@ -21,6 +27,10 @@ const RequestEntry = (props) => {
             }})
             .then((rsp) => {
                 console.log(rsp)
+                if (rsp.status == 200) {
+                    setMsg('Successfully accepted request.');
+                    setVisible("invisible");
+                }
             }).catch((error) => {
                 console.log(error) 
             })
@@ -29,6 +39,12 @@ const RequestEntry = (props) => {
             console.log(err);
         }
     }
+    const toastMsg = (msg && <Toast>
+        <Toast.Header>
+          <strong className="me-auto">Venmo Faker</strong>
+        </Toast.Header>
+        <Toast.Body>{msg}</Toast.Body>
+      </Toast>)
 
     const handleDecline = async (e) => {
         e.preventDefault();
@@ -43,6 +59,10 @@ const RequestEntry = (props) => {
             }})
             .then((rsp) => {
                 console.log(rsp)
+                if (rsp.status == 200) {
+                    setMsg('Successfully declined request.');
+                    setVisible("invisible");
+                }
             }).catch((error) => {
                 console.log(error) 
             })
@@ -52,29 +72,53 @@ const RequestEntry = (props) => {
         }
     }
     return (
-            <>
-            <Card>
+            <Container>
+                {toastMsg}
+            <Card className={visible}>
                 <Card.Title>
-                <Badge pill bg="warning" text="dark">
-                User {request?.toUid}
-                </Badge>
-                 Requested
-                 <Badge pill bg="info" text="dark">
-                 {request?.amount} 
-                </Badge>
-                <Badge pill bg="warning" text="dark">
-                User {request?.fromUid}
-                </Badge>
+                    <Row>
+                    <Col md={2}>
+                    <Badge pill bg="warning" text="dark">
+                    User {request?.toUid}
+                    </Badge>
+                    </Col>
+                    <Col md={6}>
+                    Requested
+                    <Badge pill bg="light" text="dark">
+                    {request?.amount}
+                    </Badge>
+                    {" from "} 
+                    </Col>
+                    <Col md={2}>
+                    <Badge pill bg="warning" text="dark">
+                    User {request?.fromUid}
+                    </Badge>
+                    </Col>
+                    </Row>
                 </Card.Title>
             <Card.Body>
+            <Row>
             
-            {request?.description}
-            Category:
-            {request?.category}
-            <Button onClick={handleAccept}>Accept</Button>
-            <Button onClick={handleDecline}>Decline</Button>              
+            <>
+            <Col>
+            Description: {request?.desc || 'None'}
+            </Col>
+            <Col>
+            Category: {request?.category || 'None'}
+            </Col>
+            </>
+            
+            </Row>
+            <Row>
+            {profile?.id && request?.toUid && profile.id != request.toUid && 
+            <Col>
+            <Button variant="outline-primary" onClick={handleAccept}>Accept</Button>
+            <Button variant="outline-danger" onClick={handleDecline}>Decline</Button>              
+            </Col>
+            }
+            </Row>
             </Card.Body>
             </Card>
-            </>
+            </Container>
 )}
 export default RequestEntry
