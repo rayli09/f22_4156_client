@@ -11,7 +11,6 @@ export default function RequestForm(props) {
     const [description, setDescription] = useState();
     const [category, setCategory] = useState("FOOD");
     
-    const onId = (e) => setId(e.target.value);
     const onAmount = (e) => setAmount(e.target.value);
     const onDescription = (e) => setDescription(e.target.value);
     const onCategory = (e) => setCategory(e.target.value);
