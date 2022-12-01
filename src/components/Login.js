@@ -65,9 +65,9 @@ export default function Login(props) {
     <div>
         
       <Container>
+          <NoticeBanner children={success || noticeBanner}/>
         <Row className="vh-100 d-flex justify-content-center align-items-center">
           <Col md={8} lg={6} xs={12}>
-          <NoticeBanner children={success || noticeBanner}/>
             { props?.userData == null ? 
             <>
             <div className="border border-3 border-primary"></div>

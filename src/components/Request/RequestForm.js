@@ -57,7 +57,7 @@ export default function RequestForm(props) {
     <NoticeBanner children={success || noticeBanner}/>
         <Row >
           <Col >
-            <div className="border border-3 border-primary"></div>
+            
             <Card className="shadow">
               <Card.Body>
                 <div className="mb-3 mt-md-4">

@@ -34,7 +34,7 @@ const Feed = (props) => {
         ))
         return (
             <>
-                {activities}
+                {activities.length == 0 ? 'Your feed is empty. Start making a transfer or request!' : activities}
             </>
         )
     }

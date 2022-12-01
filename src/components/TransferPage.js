@@ -49,7 +49,7 @@ const TransferPage = (props) => {
     return (
         <Container>
             <NoticeBanner children={notice}/>
-            <div className="border border-3 border-primary" />
+            
             <Card className="shadow">
                 <Card.Body>
                     <div className="mb-3 mt-md-4">

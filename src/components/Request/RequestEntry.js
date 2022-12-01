@@ -4,10 +4,13 @@ import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { END_POINT } from '../../utils';
+import { Container, Row, Col } from 'react-bootstrap';
 
 const RequestEntry = (props) => {
     const request = props?.request
-
+    const profile = props?.profile
+    // console.log(profile.id);
+    // console.log(request.toUid)
     const handleAccept = async (e) => {
         e.preventDefault();
         const payload = {
@@ -52,29 +55,52 @@ const RequestEntry = (props) => {
         }
     }
     return (
-            <>
+            <Container>
             <Card>
                 <Card.Title>
-                <Badge pill bg="warning" text="dark">
-                User {request?.toUid}
-                </Badge>
-                 Requested
-                 <Badge pill bg="info" text="dark">
-                 {request?.amount} 
-                </Badge>
-                <Badge pill bg="warning" text="dark">
-                User {request?.fromUid}
-                </Badge>
+                    <Row>
+                    <Col md={2}>
+                    <Badge pill bg="warning" text="dark">
+                    User {request?.toUid}
+                    </Badge>
+                    </Col>
+                    <Col md={6}>
+                    Requested
+                    <Badge pill bg="light" text="dark">
+                    {request?.amount}
+                    </Badge>
+                    {" from "} 
+                    </Col>
+                    <Col md={2}>
+                    <Badge pill bg="warning" text="dark">
+                    User {request?.fromUid}
+                    </Badge>
+                    </Col>
+                    </Row>
                 </Card.Title>
             <Card.Body>
+            <Row>
             
-            {request?.description}
-            Category:
-            {request?.category}
-            <Button onClick={handleAccept}>Accept</Button>
-            <Button onClick={handleDecline}>Decline</Button>              
+            <>
+            <Col>
+            Description: {request?.description || 'None'}
+            </Col>
+            <Col>
+            Category: {request?.category || 'None'}
+            </Col>
+            </>
+            
+            </Row>
+            <Row>
+            {profile?.id && request?.toUid && profile.id != request.toUid && 
+            <Col>
+            <Button variant="outline-primary" onClick={handleAccept}>Accept</Button>
+            <Button variant="outline-danger" onClick={handleDecline}>Decline</Button>              
+            </Col>
+            }
+            </Row>
             </Card.Body>
             </Card>
-            </>
+            </Container>
 )}
 export default RequestEntry
