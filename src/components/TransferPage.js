@@ -1,11 +1,11 @@
 import React, {useRef, useState} from 'react';
 import SearchProfiles from "./SearchProfiles";
 import { END_POINT } from '../utils';
-import {Button, Card, Form} from "react-bootstrap";
+import { Button, Card, Container, Form } from "react-bootstrap";
 import NoticeBanner from "./NoticeBanner";
 
 const TransferPage = (props) => {
-    const [amount, setAmount] = useState("");
+    const [amount, setAmount] = useState(0.);
     const [description, setDescription] = useState("");
     const [category, setCategory] = useState("FOOD");
     const onAmount = (e) => setAmount(e.target.value);
@@ -36,6 +36,7 @@ const TransferPage = (props) => {
             });
             if (res.status === 200) {
                 setNotice("Transfer completed successfully");
+                setAmount(0.);  // prevents user making duplicate transfer by mistake
             } else {
                 setNotice("Transfer failed due to some invalid operations");
             }
@@ -46,22 +47,23 @@ const TransferPage = (props) => {
     };
 
     return (
-        <div>
-            <h1>Create a Transfer</h1>
-            <br/>
+        <Container>
             <NoticeBanner children={notice}/>
+            <div className="border border-3 border-primary" />
             <Card className="shadow">
                 <Card.Body>
-                    <SearchProfiles handleToUid={handleToUid} currEmail={props.userData.email}/>
                     <div className="mb-3 mt-md-4">
                         <h2 className="fw-bold mb-2 text-uppercase ">Make Transfer</h2>
                         <p className=" mb-5">Please enter your transfer details!</p>
                         <div className="mb-3">
                             <Form ref={formRef}>
+                                <SearchProfiles handleToUid={handleToUid} currEmail={props.userData.email}/>
                                 <Form.Group className="mb-3" controlId="formAmount">
-                                    <Form.Label>Amount</Form.Label>
+                                    <Form.Label>Amount ($)</Form.Label>
                                     <Form.Control onChange={onAmount}
                                                   type="number"
+                                                  min="0"
+                                                  step="0.01"
                                                   placeholder="Enter amount" />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="formDescription">
@@ -86,7 +88,7 @@ const TransferPage = (props) => {
                                     </Form.Select>
                                 </Form.Group>
                                 <div className="d-grid">
-                                    <Button onClick={handleSubmit} variant="primary" type="submit">
+                                    <Button onClick={handleSubmit} variant="primary" type="submit" disabled={!toUid || amount < 0.01 || !category}>
                                         Make Transfer
                                     </Button>
                                 </div>
@@ -95,7 +97,7 @@ const TransferPage = (props) => {
                     </div>
                 </Card.Body>
             </Card>
-        </div>
+        </Container>
     );
 };
 

@@ -101,9 +101,9 @@ def request_accept(action):
     if not token:
         return "no token provided!", 401
     if action == 'accept':
-     rsp = requests.put('{S}/request/accept'.format(S=REMOTE_SERVICE_ENDPOINT), headers={'Authorization': token}, json = request.json)
+        rsp = requests.put('{S}/request/accept'.format(S=REMOTE_SERVICE_ENDPOINT), headers={'Authorization': token}, json = request.json)
     elif action == 'decline':
-     rsp = requests.put('{S}/request/decline'.format(S=REMOTE_SERVICE_ENDPOINT), headers={'Authorization': token}, json = request.json)
+        rsp = requests.put('{S}/request/decline'.format(S=REMOTE_SERVICE_ENDPOINT), headers={'Authorization': token}, json = request.json)
     else:
         return 'aciton invalid', 404
     print("response:",rsp.text)
@@ -140,7 +140,6 @@ def search_profiles(info):
 def user_feed():
     rsp = 'NOT FOUND.'
     token = request.headers.get('Authorization')
-    print(token)
     if request.method == 'GET' and token:
         # print(request.headers)
         rsp = get_feed(token)
