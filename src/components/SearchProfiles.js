@@ -3,7 +3,15 @@ import AsyncSelect from 'react-select/async';
 import CLIENT from '../CLIENT';
 import { Card, ListGroup, Form } from "react-bootstrap";
 
-/* Simple example */
+const optionLabel = ({ accountName, email, phone }) => (
+    <div style={{ display: "flex" }}>
+      <div>{accountName}</div>
+      <div style={{ marginLeft: "10px", color: "#aaa" }}>
+        {email} {phone}
+      </div>
+    </div>
+);
+
 const SearchProfiles = ({handleSelectValue, handleToUid, currEmail}) => {
     const [inputValue, setValue] = useState('');
     const [selectedValue, setSelectedValue] = useState(null);
@@ -43,22 +51,23 @@ const SearchProfiles = ({handleSelectValue, handleToUid, currEmail}) => {
                 cacheOptions
                 defaultOptions
                 value={selectedValue}
-                getOptionLabel={e => e.email}
-                getOptionValue={e => e.accountName}
+                getOptionValue={e => e.uid}
                 loadOptions={loadOptions}
                 onInputChange={handleInputChange}
                 onChange={handleChange}
+                formatOptionLabel={optionLabel}
             />
             {selectedValue && (
                 <Card className="shadow">
-                <Card.Body>
-                <ListGroup>
-                    <ListGroup.Item>Email: {selectedValue.email}</ListGroup.Item>
-                    <ListGroup.Item>Name: {selectedValue.accountName}</ListGroup.Item>
-                    <ListGroup.Item>Phone: {selectedValue.phone}</ListGroup.Item>
-                    <ListGroup.Item>User Type: {selectedValue.userType.toLowerCase()}</ListGroup.Item>
-                </ListGroup>
-                </Card.Body>
+                    <Card.Body>
+                        <ListGroup>
+                            <ListGroup.Item>User ID: {selectedValue.uid}</ListGroup.Item>
+                            <ListGroup.Item>Name: {selectedValue.accountName}</ListGroup.Item>
+                            <ListGroup.Item>User Type: {selectedValue.userType.toLowerCase()}</ListGroup.Item>
+                            <ListGroup.Item>Email: {selectedValue.email}</ListGroup.Item>
+                            {selectedValue.phone && <ListGroup.Item>Phone: {selectedValue.phone}</ListGroup.Item>}
+                        </ListGroup>
+                    </Card.Body>
                 </Card>
             )}
         </Form.Group>

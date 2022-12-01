@@ -69,8 +69,8 @@ const UserProfilePage = (props) => {
                             <>
                                 <ListGroup>
                                     <ListGroup.Item>Email: {profile.email}</ListGroup.Item>
-                                    <ListGroup.Item>Phone: {profile.phone}</ListGroup.Item>
-                                    <ListGroup.Item>Address: {profile.address}</ListGroup.Item>
+                                    {profile.phone && <ListGroup.Item>Phone: {profile.phone}</ListGroup.Item>}
+                                    {profile.address && <ListGroup.Item>Address: {profile.address}</ListGroup.Item>}
                                     <ListGroup.Item>User Type: {profile.type.toLowerCase()}</ListGroup.Item>
                                     <ListGroup.Item>Account Name: {profile.accountName}</ListGroup.Item>
                                     <ListGroup.Item>Account Number: {profile.accountNumber}</ListGroup.Item>
