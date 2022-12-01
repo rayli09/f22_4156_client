@@ -1,16 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Card from 'react-bootstrap/Card';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { END_POINT } from '../../utils';
+import { Toast } from 'react-bootstrap';
 import { Container, Row, Col } from 'react-bootstrap';
+import { useSearchParams } from 'react-router-dom';
 
 const RequestEntry = (props) => {
     const request = props?.request
     const profile = props?.profile
-    // console.log(profile.id);
-    // console.log(request.toUid)
+    const [msg, setMsg] = useState();
+    const [visible, setVisible] = useState("visible");
+
     const handleAccept = async (e) => {
         e.preventDefault();
         const payload = {
@@ -24,6 +27,10 @@ const RequestEntry = (props) => {
             }})
             .then((rsp) => {
                 console.log(rsp)
+                if (rsp.status == 200) {
+                    setMsg('Successfully accepted request.');
+                    setVisible("invisible");
+                }
             }).catch((error) => {
                 console.log(error) 
             })
@@ -32,6 +39,14 @@ const RequestEntry = (props) => {
             console.log(err);
         }
     }
+    const toastMsg = (msg && <Toast>
+        <Toast.Header>
+          <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
+          <strong className="me-auto">Venmo Faker</strong>
+          {/* <small>11 mins ago</small> */}
+        </Toast.Header>
+        <Toast.Body>{msg}</Toast.Body>
+      </Toast>)
 
     const handleDecline = async (e) => {
         e.preventDefault();
@@ -46,6 +61,10 @@ const RequestEntry = (props) => {
             }})
             .then((rsp) => {
                 console.log(rsp)
+                if (rsp.status == 200) {
+                    setMsg('Successfully declined request.');
+                    setVisible("invisible");
+                }
             }).catch((error) => {
                 console.log(error) 
             })
@@ -56,7 +75,8 @@ const RequestEntry = (props) => {
     }
     return (
             <Container>
-            <Card>
+                {toastMsg}
+            <Card className={visible}>
                 <Card.Title>
                     <Row>
                     <Col md={2}>
