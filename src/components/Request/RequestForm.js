@@ -10,10 +10,7 @@ export default function RequestForm(props) {
     const [amount, setAmount] = useState(0.);
     const [description, setDescription] = useState();
     const [category, setCategory] = useState("FOOD");
-
-    const [phone, setPhone] = useState();
-    const [notice, setNotice] = useState();
-    const [success, setSuccess] = useState();
+    
     const onId = (e) => setId(e.target.value);
     const onAmount = (e) => setAmount(e.target.value);
     const onDescription = (e) => setDescription(e.target.value);
@@ -32,7 +29,6 @@ export default function RequestForm(props) {
                 'Authorization': props?.userData?.token 
             }})
             .then((rsp) => {
-                // console.log(rsp)
                 console.log("request id:", rsp.data?.id)
                 window.location.reload();
             }).catch((error) => {
@@ -43,26 +39,15 @@ export default function RequestForm(props) {
             console.log(err);
         }
     }
-
-    const noticeBanner = ( notice && 
-        <>
-        <h2>Error fields: <span>{notice?.errorFields
-?.join()} </span>
-        - {notice?.message} 
-        </h2>
-        </>
-    );
   return (
     <div>
-    <NoticeBanner children={success || noticeBanner}/>
         <Row >
           <Col >
-            
             <Card className="shadow">
               <Card.Body>
                 <div className="mb-3 mt-md-4">
                   <h2 className="fw-bold mb-2 text-uppercase ">Send Request</h2>
-                  <p className=" mb-5">Please enter your request!</p>
+                  <p className=" mb-5">Enter details to request money from someone else.</p>
                   <div className="mb-3">
                     <Form>
                       <SearchProfiles handleSelectValue={setId} currEmail={props.userData.email}/>

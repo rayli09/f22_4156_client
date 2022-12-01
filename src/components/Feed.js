@@ -44,9 +44,11 @@ const Feed = (props) => {
     }
     return (
         <Container>
+            <Col md={6}>
             <h1>Your Feed</h1>
             <NoticeBanner children={noticeMsg}/>
             {feedData ? feedContent() : <Loading/>}
+            </Col>
         </Container>
     )
 }
