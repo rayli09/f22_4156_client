@@ -2,7 +2,7 @@
 # ********************** IMPORTANT **********************
 # 
 # some of the functions are not fully refactored due to the change we made
-# from ads manager to Venmo. Please proceed with caution.
+# from ads manager to Zenmo. Please proceed with caution.
 #
 # ********************** IMPORTANT **********************
 

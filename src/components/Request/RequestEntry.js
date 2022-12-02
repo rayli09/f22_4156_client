@@ -43,7 +43,7 @@ const RequestEntry = (props) => {
     }
     const toastMsg = (msg && <Toast>
         <Toast.Header>
-          <strong className="me-auto">Venmo Faker</strong>
+          <strong className="me-auto">Zenmo Faker</strong>
         </Toast.Header>
         <Toast.Body>{msg}</Toast.Body>
       </Toast>)
