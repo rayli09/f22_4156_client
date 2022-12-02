@@ -102,7 +102,7 @@ const RequestEntry = (props) => {
             const key = `uid-${request?.toUid}`;
             const cached = localStorage.getItem(key);
             if (cached) {
-                setFromProfile(JSON.parse(cached));
+                setToProfile(JSON.parse(cached));
                 return;
             }
             CLIENT.get(`profile/${request?.toUid}`).then((rsp) => {
