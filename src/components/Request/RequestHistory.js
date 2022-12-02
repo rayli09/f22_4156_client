@@ -67,7 +67,7 @@ export default function RequestHistory(props) {
         console.log(entries)
         const entryList = entries?.map((request, index) => (
             // console.log(request) && 
-            (request.status == "TRANS_PENDING") ? <RequestEntry profile={profile} userData={props?.userData} key={index} request={request} /> : ""
+            (request.status === "TRANS_PENDING") ? <RequestEntry profile={profile} userData={props?.userData} key={index} request={request} /> : ""
         ))
         return (
             <>
