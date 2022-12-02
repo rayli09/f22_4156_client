@@ -5,13 +5,28 @@ import Loading from './Loading'
 import Activity from './ads/Activity'
 import NoticeBanner from './NoticeBanner';
 import { END_POINT } from '../utils';
+import CLIENT from '../CLIENT';
 
 const Feed = (props) => {
-    const [feedData, setFeedData] = useState(null)
-    const [noticeMsg, setNoticeMsg] = useState(null)
+    const [feedData, setFeedData] = useState(null);
+    const [noticeMsg, setNoticeMsg] = useState(null);
+    const [profile, setProfile] = useState(null);
     useEffect(() => {
         handleFetchData();
     }, [])
+    useEffect(() => {
+        if (profile === null) {
+            CLIENT.get("profile", {
+                headers: {
+                    'Authorization': props?.userData?.token 
+                }
+            }).then((rsp) => {
+                setProfile(rsp.data);
+            }).catch((error) => {
+                console.log(error) 
+            })
+        }
+    },[])
     const handleFetchData = async () => {
         if (!props?.userData?.token){
             return;
@@ -30,7 +45,7 @@ const Feed = (props) => {
     }
     const feedContent = () => {
         const activities = feedData?.activities?.map((act, index) => (
-            <Activity key={index} act={act}/>
+            <Activity curUid={profile?.id}key={index} act={act}/>
         ))
         return (
             <>

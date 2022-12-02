@@ -71,8 +71,17 @@ const Activity = (props) => {
 
     const getToolTipText = (profile) => {
         return profile ? `Account Name: ${profile.accountName}<br/>Email: ${profile.email}<br/>Phone: ${profile.phone}` : "";
-    }
-
+    };
+    const fromUserText = (
+        <a onMouseEnter={() => setLoadFrom(true)} data-for="activityToolTip" data-tip={getToolTipText(fromProfile)}>
+            User {act?.fromUid}{' '}{props?.curUid == act?.fromUid ? '(You)' : ''}
+        </a>
+    );
+    const toUserText = (
+        <a onMouseEnter={() => setLoadTo(true)} data-for="activityToolTip" data-tip={getToolTipText(toProfile)}>
+                        User {act?.toUid}{props?.curUid == act?.toUid ? '(You)' : ''}
+        </a>
+    );
     return (
         <>
             <Card>
@@ -92,13 +101,9 @@ const Activity = (props) => {
                     <Row>
 
                     <Col>
-                    <a onMouseEnter={() => setLoadFrom(true)} data-for="activityToolTip" data-tip={getToolTipText(fromProfile)}>
-                        User {act?.fromUid}{' '}
-                    </a>  
+                    {fromUserText} 
                     <Badge bg="success">Paid</Badge> 
-                    <a onMouseEnter={() => setLoadTo(true)} data-for="activityToolTip" data-tip={getToolTipText(toProfile)}>
-                        User {act?.toUid}
-                    </a>
+                    {toUserText}
                     </Col>
                     </Row>
                 </Card.Subtitle>

@@ -139,12 +139,14 @@ const RequestEntry = (props) => {
                                 User {request?.toUid}
                             </Badge>
                         </Col>
-                        <Col md={6}>
-                            Requested
+                        <Col md={7}>
+                            <small>
+                                Requested
                             <Badge pill bg="light" text="dark">
                                 ${request?.amount}
                             </Badge>
                             {" from "} 
+                            </small>
                         </Col>
                         <Col md={2}>
                             <Badge pill bg="warning" text="dark" 
