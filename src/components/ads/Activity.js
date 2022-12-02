@@ -89,6 +89,9 @@ const Activity = (props) => {
                     </Badge>
                 </Card.Title>
                 <Card.Subtitle>
+                    <Row>
+
+                    <Col>
                     <a onMouseEnter={() => setLoadFrom(true)} data-for="activityToolTip" data-tip={getToolTipText(fromProfile)}>
                         User {act?.fromUid}{' '}
                     </a>  
@@ -96,8 +99,20 @@ const Activity = (props) => {
                     <a onMouseEnter={() => setLoadTo(true)} data-for="activityToolTip" data-tip={getToolTipText(toProfile)}>
                         User {act?.toUid}
                     </a>
+                    </Col>
+                    </Row>
                 </Card.Subtitle>
-                <Card.Body>{act?.desc}</Card.Body>
+                <Card.Body>
+                    <Row>
+                        <Col>
+                    Description: {act?.desc} 
+                        </Col>
+                        <Col>
+                    Category: {act?.category}
+                        </Col>
+                    </Row>
+                </Card.Body>
+                
             </Card>
             <ReactTooltip
                 id="activityToolTip"
