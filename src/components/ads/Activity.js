@@ -30,38 +30,42 @@ const Activity = (props) => {
     const [loadTo, setLoadTo] = useState(false);
 
     useEffect(() => {
-        if (fromProfile === null && loadFrom) {
+        if (fromProfile === null) {
             const key = `uid-${act?.fromUid}`;
             const cached = localStorage.getItem(key);
             if (cached) {
                 setFromProfile(JSON.parse(cached));
                 return;
             }
-            CLIENT.get(`profile/${act?.fromUid}`).then((rsp) => {
-                // console.log(rsp)
-                setFromProfile(rsp.data);
-                localStorage.setItem(key, JSON.stringify(rsp.data));
-            }).catch((error) => {
-                console.log(error) 
-            })
+            if (loadFrom) {
+                CLIENT.get(`profile/${act?.fromUid}`).then((rsp) => {
+                    // console.log(rsp)
+                    setFromProfile(rsp.data);
+                    localStorage.setItem(key, JSON.stringify(rsp.data));
+                }).catch((error) => {
+                    console.log(error) 
+                })
+            }
         }
     }, [fromProfile, act?.fromUid, loadFrom]);
 
     useEffect(() => {
-        if (toProfile === null && loadTo) {
+        if (toProfile === null) {
             const key = `uid-${act?.toUid}`;
             const cached = localStorage.getItem(key);
             if (cached) {
                 setToProfile(JSON.parse(cached));
                 return;
             }
-            CLIENT.get(`profile/${act?.toUid}`).then((rsp) => {
-                // console.log(rsp)
-                setToProfile(rsp.data);
-                localStorage.setItem(key, JSON.stringify(rsp.data));
-            }).catch((error) => {
-                console.log(error) 
-            })
+            if (loadTo) {
+                CLIENT.get(`profile/${act?.toUid}`).then((rsp) => {
+                    // console.log(rsp)
+                    setToProfile(rsp.data);
+                    localStorage.setItem(key, JSON.stringify(rsp.data));
+                }).catch((error) => {
+                    console.log(error) 
+                })
+            }
         }
     }, [toProfile, act?.toUid, loadTo]);
 
