@@ -80,6 +80,17 @@ def my_profile():
     payload.pop('account')
     return payload, 200
 
+
+@app.route('/profile/<uid>', methods=['GET'])
+def get_profile_by_id(uid):
+    try:
+        uid = int(uid)
+    except Exception:
+        return "Invalid user id provided!", 400
+    rsp = requests.get('{S}/search/id/{I}'.format(S=REMOTE_SERVICE_ENDPOINT, I=uid))
+    return rsp.json(), 200
+
+
 @app.route('/request', methods=['POST', 'GET'])
 def my_request():
     token = request.headers.get('Authorization')
