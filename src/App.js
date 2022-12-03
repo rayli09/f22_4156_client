@@ -20,8 +20,8 @@ function App() {
     <BrowserRouter>
       <MyNavbar userData={userData}/> 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home userData={userData}/>} />
+        <Route path="/home" element={<Home userData={userData}/>} />
         <Route path="/feed" element={<Feed userData={userData}/>} />
         <Route path="/request" element={<RequestPage userData={userData}/>} />
         <Route path="/transfer" element={<TransferPage userData={userData} />} />
