@@ -130,13 +130,13 @@ const RequestEntry = (props) => {
             <Card className={visible}>
                 <Card.Title>
                     <Row>
-                        <Col md={2}>
+                        <Col md={3}>
                             <Badge pill bg="warning" text="dark" 
                                 onMouseEnter={() => setLoadTo(true)}
                                 data-for="requestToolTip" 
                                 data-tip={getToolTipText(toProfile)}
                             >
-                                User {request?.toUid}
+                                User {request?.toUid} (You)
                             </Badge>
                         </Col>
                         <Col md={7}>
