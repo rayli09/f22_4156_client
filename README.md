@@ -23,24 +23,31 @@ This client shows a subset of our **[EasyMoney](https://github.com/howieraem/COM
 2. **Transfer**: transfers are like one-way payment from the user to someone else. Transactions are executed immediately. No actions taken on the receiver side.
 3. **Request**: requests are pending once sent, and receiver needs to take actions, i.e. accept/decline, to make the transaction or decline the request, respectively.
 4. **User Profile**: a simple profile page for viewing user profile details, making deposit/withdrawing money.
+5. **Feed**: display all the transactions in which the current user is involved.
 
 ## Testings
 We use manual testing to demonstrate the workflow between this client and our service.
-1. First follow ***How to build and run locally*** to set up the client
-2. **Authentication workflow**: 
-   1. Visit the website on [http://localhost:3000](http://localhost:3000)
-   2. Click on the login button on the nav bar. The auth feature uses our auth service to register/login. 
-   3. If you're new to the website, click the signup link at the bottom, and you can fill in information to register.
-   4. If you've already signed up, login with exisitng credentials.
-3. **Money transfer workflow**
+1. First follow ***How to build and run locally*** to set up the client and then visit [http://localhost:3000](http://localhost:3000)
+2. **Authentication Workflow**:
+   1. Click on the login button in the nav bar. The auth feature uses our auth service to register/login. 
+   2. If you're new to the website, click the signup link at the bottom, and you can fill in information to register.
+   3. If you've already signed up, login with exisitng credentials.
+3. **Deposite/Withdraw Workflow**:
+   1. Click on the profile button in the nav bar.
+   2. Fill in the amount of money you want to deposit to/withdraw from your account, and then hit the button.
+   3. You should see your balance immediately changed in the profile page.
+4. **Money Transfer Workflow**
    1. After logging in, click on the transfer button in the nav bar
    2. Use the search bar to find the person you want to transfer money from, type in other details like amount, descriptions, and category, and then hit make transfer.
    3. If transfer is successfully completed, a successful banner will pop up; otherwise, a failed notice with specific error message will pop up.
-4. **Money request workflow**
+5. **Money Request Workflow**
    1. Fill in the request similar to the steps in ***Money Transfer Workflow***
    2. Now there's a new section which contains cards of items, and each item is a pending request.
    3. If you send the request, there will be no accept/decline button on your side. You can just view the pending requests sent BY YOU.
    4. If you receive the request, you can view the pending requests sending TO YOU. There will be accept/decline button for you to accept or decline the request, and balance will be updated accordingly as soon as you hit either button.
+6. **Feed Workflow**:
+   1. Click on the feed button in the nav bar.
+   2. You should see your transactions displayed in feed.
 
 
 ## Some Common Issues
