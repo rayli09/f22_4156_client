@@ -12,6 +12,7 @@ const TransferPage = (props) => {
     const onDescription = (e) => setDescription(e.target.value);
     const onCategory = (e) => setCategory(e.target.value);
     const [notice, setNotice] = useState("");
+    const [success, setSuccess] = useState("");
     const [toUid, setToUid] = useState("");
     const formRef = useRef(null);
 
@@ -38,10 +39,16 @@ const TransferPage = (props) => {
                 }),
             });
             if (res.status === 200) {
-                setNotice("Transfer completed successfully");
+                setSuccess("Transfer completed successfully");
                 setAmount(0.);  // prevents user making duplicate transfer by mistake
             } else {
-                setNotice("Transfer failed due to some invalid operations");
+                let resJson = await res.json();
+                let errorFields = resJson.errorFields;
+                let errorMsg = "";
+                for (let i = 0; i < errorFields.length; i++) {
+                    errorMsg += errorFields[i] + " ";
+                }
+                setNotice(errorMsg);
             }
             formRef.current.reset();
         } catch (err) {
@@ -49,9 +56,15 @@ const TransferPage = (props) => {
         }
     };
 
+    const noticeBanner = ( notice &&
+        <>Transfer failed. Error fields:&nbsp;
+            <span>{notice}</span>
+        </>
+    );
+
     return (
         <Container>
-            <NoticeBanner children={notice}/>            
+            <NoticeBanner children={success || noticeBanner}/>
             <Card className="shadow">
                 <Card.Body>
                     <div className="mb-3 mt-md-4">

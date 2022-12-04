@@ -13,7 +13,7 @@ const MyNavbar = (props) => {
 
       <Navbar bg="light" variant="light">
       <Container>
-        <Navbar.Brand>Zenmo</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/home">Zenmo</Navbar.Brand>
         <Nav className="me-auto">
           {username && (
             <>
