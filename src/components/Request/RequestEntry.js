@@ -136,7 +136,7 @@ const RequestEntry = (props) => {
                                 data-for="requestToolTip" 
                                 data-tip={getToolTipText(toProfile)}
                             >
-                                User {request?.toUid} (You)
+                                User {request?.toUid}
                             </Badge>
                         </Col>
                         <Col md={7}>
