@@ -10,6 +10,7 @@ import NoticeBanner from "./NoticeBanner";
 const UserProfilePage = (props) => {
     const [profile, setProfile] = useState(null);
     const [amount, setAmount] = useState(0.);
+    const [adsPayload, setAdsPayload] = useState(null);
     const onAmount = (e) => setAmount(e.target.value);
     const [notice, setNotice] = useState("");
     
@@ -48,12 +49,42 @@ const UserProfilePage = (props) => {
                 setAmount(0.);
                 setNotice(isDeposit ? "Deposited successfully!" : "Withdrew successfully!");
             }).catch(err => {
-                console.log(err)
+                setNotice(err);
+                console.log(err);
             })
         } catch (err) {
+            setNotice(err);
             console.log(err);
         }
     }
+
+    const onEditAds = (e) => {
+        setAdsPayload({
+            "promotionText": e.target.value
+        });
+    }
+
+    const handleAdsSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            CLIENT.put("ads", adsPayload, {
+                headers: {
+                    'Authorization': props?.userData?.token
+                }
+            })
+            .then(rsp => {
+                setProfile(null);
+                setAmount(0.);
+                setNotice("Your advertisement was updated successfully!");
+            }).catch(err => {
+                setNotice(err);
+                console.log(err);
+            })
+        } catch (err) {
+            setNotice(err);
+            console.log(err);
+        }
+    };
 
     const isTooSmall = amount < 0.01;
 
@@ -88,28 +119,49 @@ const UserProfilePage = (props) => {
                                             aria-describedby="btnGroupAddon"
                                             onChange={onAmount}
                                         />
+                                        {/* <ButtonGroup className="me-2" aria-label="Deposit btn group"> */}
+                                            <Button 
+                                                variant="outline-secondary"
+                                                disabled={isTooSmall} 
+                                                id="depositBtn"
+                                                onClick={handleBalanceUpdateSubmission}
+                                            >
+                                                Deposit
+                                            </Button>
+                                        {/* </ButtonGroup> */}
+                                        {/* <ButtonGroup className="me-2" aria-label="Withdraw btn group"> */}
+                                            <Button 
+                                                variant="outline-secondary"
+                                                disabled={isTooSmall || amount > parseFloat(profile.balance.toFixed(2))}
+                                                id="withdrawBtn"
+                                                onClick={handleBalanceUpdateSubmission}
+                                            >
+                                                Withdraw
+                                            </Button>
+                                        {/* </ButtonGroup> */}
                                     </InputGroup>
-                                    <ButtonGroup className="me-2" aria-label="Deposit btn group">
-                                        <Button 
-                                            variant="secondary" 
-                                            disabled={isTooSmall} 
-                                            id="depositBtn"
-                                            onClick={handleBalanceUpdateSubmission}
-                                        >
-                                            Deposit
-                                        </Button>
-                                    </ButtonGroup>
-                                    <ButtonGroup className="me-2" aria-label="Withdraw btn group">
-                                        <Button 
-                                            variant="secondary" 
-                                            disabled={isTooSmall || amount > parseFloat(profile.balance.toFixed(2))}
-                                            id="withdrawBtn"
-                                            onClick={handleBalanceUpdateSubmission}
-                                        >
-                                            Withdraw
-                                        </Button>
-                                    </ButtonGroup>
+                                    
                                 </ButtonToolbar>
+
+                                {profile.type === "BUSINESS" && (
+                                    <InputGroup>
+                                        <Form.Group
+                                            className="mb-3"
+                                            controlId="formAds"
+                                        >
+                                            <Form.Label>Edit Your Advertisement</Form.Label>
+                                            <Form.Control onChange={onEditAds} type="text" defaultValue={profile.bizPromotionText} />
+                                            <Button 
+                                                variant="outline-secondary"
+                                                disabled={!adsPayload}
+                                                id="adsBtn"
+                                                onClick={handleAdsSubmit}
+                                            >
+                                                Update
+                                            </Button>
+                                        </Form.Group>
+                                    </InputGroup>
+                                )}
                             </>
                         )}
                     </div>
