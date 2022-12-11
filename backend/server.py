@@ -47,24 +47,6 @@ def hello_world():
     return jsonify("hello world"), 200
 
 
-@app.route('/assets/<uid>')
-def manage_assets(uid):
-    # TODO needs refactoring
-    method = request.method
-    if method == 'GET':
-        assets = db_service.query_db('select * from assets where uid = ?', [uid])
-        return assets
-    elif method == 'POST':
-        ass = request.json
-        new_ass_id = db_service.insert_db('insert into assets (amount,desc,owner_id) values (?,?,?,?) ',
-                                          [ass['amount'], ass['desc'], ass['owner_id']])
-        return "{} has been created.".format(new_ass_id)
-    elif method == 'DELETE':
-        pass
-
-    return 'NOT SUPPORTED'
-
-
 @app.route('/profile', methods=['GET'])
 def my_profile():
     token = request.headers.get('Authorization')
@@ -98,13 +80,14 @@ def my_request():
         return "no token provided!", 401
     method = request.method
     if method == 'POST':
-     rsp = requests.post('{S}/request/create'.format(S=REMOTE_SERVICE_ENDPOINT), headers={'Authorization': token}, json = request.json)
+        rsp = requests.post('{S}/request/create'.format(S=REMOTE_SERVICE_ENDPOINT), headers={'Authorization': token}, json = request.json)
     elif method == 'GET':
-     rsp = requests.get('{S}/request'.format(S=REMOTE_SERVICE_ENDPOINT), headers={'Authorization': token})
+        rsp = requests.get('{S}/request'.format(S=REMOTE_SERVICE_ENDPOINT), headers={'Authorization': token})
     else:
-         return 'aciton invalid', 404
+         return 'method not allowed', 405
     print(rsp.json())
     return rsp.json(), rsp.status_code
+
 
 @app.route('/request/<action>', methods=['PUT'])
 def request_accept(action):
@@ -116,7 +99,7 @@ def request_accept(action):
     elif action == 'decline':
         rsp = requests.put('{S}/request/decline'.format(S=REMOTE_SERVICE_ENDPOINT), headers={'Authorization': token}, json = request.json)
     else:
-        return 'aciton invalid', 404
+        return 'action invalid', 404
     print("response:",rsp.text)
     return rsp.text, rsp.status_code
 
@@ -180,7 +163,6 @@ def get_token():
 
 
 def handle_register(request):
-    # TODO make sure userType is business
     rsp = requests.post('{S}/auth/register'.format(S=REMOTE_SERVICE_ENDPOINT), json=request.json)
     # use json.loads to parse json properly
     return json.loads(rsp.text)
