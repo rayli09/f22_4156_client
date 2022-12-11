@@ -4,20 +4,26 @@ import { useState } from "react";
 import NoticeBanner from "./NoticeBanner";
 
 export default function Signup(props) {
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
-    const [accountName, setAccountName] = useState();
-    const [accountNumber, setAccountNumber] = useState();
-    const [routingNumber, setRoutingNumber] = useState();
-    const [phone, setPhone] = useState();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [accountName, setAccountName] = useState('');
+    const [accountNumber, setAccountNumber] = useState('');
+    const [routingNumber, setRoutingNumber] = useState('');
+    const [phone, setPhone] = useState('');
+    const [isBizType, setIsBizType] = useState(false);
+    const [ads, setAds] = useState('');
     const [notice, setNotice] = useState();
     const [success, setSuccess] = useState();
+    const [submitted, setSubmitted] = useState(false);
     const onEmail = (e) => setEmail(e.target.value);
     const onPassword = (e) => setPassword(e.target.value);
     const onAccountName = (e) => setAccountName(e.target.value);
     const onAccountNumber = (e) => setAccountNumber(e.target.value);
     const onRoutingNumber = (e) => setRoutingNumber(e.target.value);
     const onPhone = (e) => setPhone(e.target.value);
+    const onBizType = (e) => setIsBizType(e.target.checked);
+    const onAds = (e) => setAds(e.target.value);
+    
     // signup
     const handleSignup = async (e) => {
         e.preventDefault();
@@ -28,7 +34,8 @@ export default function Signup(props) {
             "accountNumber" : accountNumber,
             "routingNumber" : routingNumber,
             "phone" : phone,
-            "userType" : "personal"
+            "userType" : isBizType ? "business" : "personal",
+            "bizPromotionText": ads
         }
         try {
             axios.post(`http://127.0.0.1:5000/auth/register`, payload)
@@ -38,7 +45,8 @@ export default function Signup(props) {
                     setNotice(rsp.data);
                 } else {
                     // success register
-                    setSuccess(`Personal User ${rsp.data?.id} is created!`);
+                    setSuccess(`${isBizType ? "Business" : "Personal"} User with ID ${rsp.data?.id} is created! Please login in to use the app!`);
+                    setSubmitted(true);
                 }
 
             })
@@ -49,12 +57,21 @@ export default function Signup(props) {
     }
     const noticeBanner = ( notice && 
         <>
-        <h2>Error fields: <span>{notice?.errorFields
-?.join()} </span>
-        - {notice?.message} 
+        <h2>
+          Error fields: <span>{notice?.errorFields?.join()} </span>
+          - {notice?.message} 
         </h2>
         </>
     );
+
+  const emailInvalid = !(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    .test(email));
+  const passwordInvalid = !password.length;
+  const accountNameInvalid = !accountName.length;
+  const accountNumberInvalid = !(/^\d{8,17}$/.test(accountNumber));
+  const routingNumberInvalid = !(/^\d{9}$/.test(routingNumber));
+  const phoneInvalid = !(/^\d{10}$/.test(phone));
+  
   return (
     <div>
     <Container>
@@ -74,7 +91,7 @@ export default function Signup(props) {
                         <Form.Label className="text-center">
                           Email address
                         </Form.Label>
-                        <Form.Control onChange={onEmail} type="email" placeholder="Enter email" />
+                        <Form.Control onChange={onEmail} type="email" placeholder="Email" isInvalid={emailInvalid} />
                       </Form.Group>
 
                       <Form.Group
@@ -82,39 +99,64 @@ export default function Signup(props) {
                         controlId="formPassword"
                       >
                         <Form.Label>Password</Form.Label>
-                        <Form.Control onChange={onPassword} type="password" placeholder="Password" />
+                        <Form.Control onChange={onPassword} type="password" placeholder="Password" isInvalid={passwordInvalid} />
                       </Form.Group>
                       <Form.Group
                         className="mb-3"
                         controlId="formAccountName"
                       >
-                        <Form.Label>Account Name(String)</Form.Label>
-                        <Form.Control  onChange={onAccountName} type="accountName" placeholder="Account Name" />
+                        <Form.Label>Account Name</Form.Label>
+                        <Form.Control  onChange={onAccountName} type="text" placeholder="Account Name" isInvalid={accountNameInvalid} />
                       </Form.Group>
                       <Form.Group
                         className="mb-3"
                         controlId="formAccountNumber"
                       >
-                        <Form.Label>Account Number(12-17 digits)</Form.Label>
-                        <Form.Control  onChange={onAccountNumber} type="accountNumber" placeholder="Account Number" />
+                        <Form.Label>Account Number (8-17 digits)</Form.Label>
+                        <Form.Control  onChange={onAccountNumber} type="text" placeholder="Account Number" isInvalid={accountNumberInvalid} />
                       </Form.Group>
                       <Form.Group
                         className="mb-3"
                         controlId="formRoutingNumber"
                       >
-                        <Form.Label>Routing Number(9 digits)</Form.Label>
-                        <Form.Control  onChange={onRoutingNumber} type="routingNumber" placeholder="Routing Number" />
+                        <Form.Label>Routing Number (9 digits)</Form.Label>
+                        <Form.Control  onChange={onRoutingNumber} type="text" placeholder="Routing Number" isInvalid={routingNumberInvalid} />
                       </Form.Group>
                       <Form.Group
                         className="mb-3"
                         controlId="formPhone"
                       >
-                        <Form.Label>Phone</Form.Label>
-                        <Form.Control  onChange={onPhone} type="phone" placeholder="Phone" />
+                        <Form.Label>Phone (10 digits)</Form.Label>
+                        <Form.Control  onChange={onPhone} type="text" placeholder="Phone" isInvalid={phoneInvalid} />
                       </Form.Group>
+                      <Form.Group
+                        className="mb-3"
+                        controlId="formUserType"
+                      >
+                        <div key={`biz-usr-checkbox`} className="mb-3">
+                          <Form.Check 
+                            type='checkbox'
+                            id={`biz-usr-checkbox`}
+                            label="Business User"
+                            onChange={onBizType}
+                          />
+                        </div>
+                      </Form.Group>
+                      {isBizType && (
+                        <Form.Group
+                          className="mb-3"
+                          controlId="formAds"
+                        >
+                          <Form.Label>Your Advertisement</Form.Label>
+                          <Form.Control onChange={onAds} type="text" placeholder="Advertisement" />
+                        </Form.Group>
+                      )}
 
                       <div className="d-grid">
-                        <Button onClick={handleSignup}variant="primary" type="submit">
+                        <Button 
+                          onClick={handleSignup} variant="primary" type="submit" 
+                          disabled={submitted || emailInvalid || phoneInvalid || accountNameInvalid || accountNumberInvalid || routingNumberInvalid || phoneInvalid}
+                        >
                           Signup
                         </Button>
                       </div>
