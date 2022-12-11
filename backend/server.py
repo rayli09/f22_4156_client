@@ -73,6 +73,19 @@ def get_profile_by_id(uid):
     return rsp.json(), 200
 
 
+@app.route('/ads', methods=['PUT'])
+def edit_ads():
+    token = request.headers.get('Authorization')
+    if token == 'undefined' or not token:
+        return "no token provided!", 401
+    rsp = requests.put('{S}/user/biz'.format(S=REMOTE_SERVICE_ENDPOINT), headers={'Authorization': token}, json = request.json)
+    if rsp.status_code == 200:
+        # server's API returns null response body even if 200, so rsp.json() will not work
+        return "Success", 200
+    else:
+        return "Error", rsp.status_code
+
+
 @app.route('/request', methods=['POST', 'GET'])
 def my_request():
     token = request.headers.get('Authorization')
