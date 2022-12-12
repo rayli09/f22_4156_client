@@ -94,7 +94,6 @@ const Activity = (props) => {
                     {userType(act?.fromType)}
                     To
                     {userType(act?.toType)}
-                    {amount(act?.amount)}
                 </Card.Title>
                     }
                 <Card.Title>
@@ -109,6 +108,7 @@ const Activity = (props) => {
                     {fromUserText} 
                     <Badge bg="success">Paid</Badge> 
                     {toUserText}
+                    {amount(act?.amount)}
                     </Col>
                     </Row>
                 </Card.Subtitle>
