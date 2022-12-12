@@ -31,7 +31,7 @@ const Feed = (props) => {
         if (!props?.userData?.token){
             return;
         }
-        axios.get(`${END_POINT}feed`,{
+        axios.get(profile?.type == 'PERSONAL' ? `${END_POINT}feed` : `${END_POINT}transfer` ,{
             headers: {
                 'Authorization': props?.userData?.token 
             }
@@ -44,12 +44,13 @@ const Feed = (props) => {
         })
     }
     const feedContent = () => {
-        const activities = feedData?.activities?.map((act, index) => (
-            <Activity curUid={profile?.id}key={index} act={act}/>
+        const feed = profile.type == 'PERSONAL' ? feedData?.activities : feedData?.transfers
+        const activities = feed?.map((act, index) => (
+            <Activity isViewerPersonal={profile?.type == 'PERSONAL'}curUid={profile?.id}key={index} act={act}/>
         ))
         return (
             <>
-                {activities.length == 0 ? 'Your feed is empty. Start making a transfer or request!' : activities}
+                {activities?.length == 0 ? 'Your feed is empty. Start making a transfer or request!' : activities}
             </>
         )
     }
