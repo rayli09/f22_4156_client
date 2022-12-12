@@ -13,7 +13,7 @@ const Feed = (props) => {
     const [profile, setProfile] = useState(null);
     useEffect(() => {
         handleFetchData();
-    }, [])
+    }, [profile])
     useEffect(() => {
         if (profile === null) {
             CLIENT.get("profile", {
@@ -44,9 +44,9 @@ const Feed = (props) => {
         })
     }
     const feedContent = () => {
-        const feed = profile.type == 'PERSONAL' ? feedData?.activities : feedData?.transfers
-        const activities = feed?.map((act, index) => (
-            <Activity isViewerPersonal={profile?.type == 'PERSONAL'}curUid={profile?.id}key={index} act={act}/>
+        const feed = profile?.type == 'PERSONAL' ? feedData?.activities : feedData?.transfers
+        const activities = profile && feed?.map((act, index) => (
+            <Activity isViewerPersonal={profile.type == 'PERSONAL'}curUid={profile?.id}key={index} act={act}/>
         ))
         return (
             <>
