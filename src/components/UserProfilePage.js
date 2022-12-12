@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import { Card, Container, Form, ListGroup }  from 'react-bootstrap';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -49,11 +48,11 @@ const UserProfilePage = (props) => {
                 setAmount(0.);
                 setNotice(isDeposit ? "Deposited successfully!" : "Withdrew successfully!");
             }).catch(err => {
-                setNotice(err);
+                setNotice(err.response?.data?.error);
                 console.log(err);
             })
         } catch (err) {
-            setNotice(err);
+            // setNotice(err);
             console.log(err);
         }
     }
@@ -114,31 +113,28 @@ const UserProfilePage = (props) => {
                                             type="number"
                                             step="0.01"
                                             min="0"
+                                            max="99999999999999999"
                                             placeholder="Enter the amount here"
                                             aria-label="Amount form"
                                             aria-describedby="btnGroupAddon"
                                             onChange={onAmount}
                                         />
-                                        {/* <ButtonGroup className="me-2" aria-label="Deposit btn group"> */}
-                                            <Button 
-                                                variant="outline-secondary"
-                                                disabled={isTooSmall} 
-                                                id="depositBtn"
-                                                onClick={handleBalanceUpdateSubmission}
-                                            >
-                                                Deposit
-                                            </Button>
-                                        {/* </ButtonGroup> */}
-                                        {/* <ButtonGroup className="me-2" aria-label="Withdraw btn group"> */}
-                                            <Button 
-                                                variant="outline-secondary"
-                                                disabled={isTooSmall || amount > parseFloat(profile.balance.toFixed(2))}
-                                                id="withdrawBtn"
-                                                onClick={handleBalanceUpdateSubmission}
-                                            >
-                                                Withdraw
-                                            </Button>
-                                        {/* </ButtonGroup> */}
+                                        <Button 
+                                            variant="outline-secondary"
+                                            disabled={isTooSmall} 
+                                            id="depositBtn"
+                                            onClick={handleBalanceUpdateSubmission}
+                                        >
+                                            Deposit
+                                        </Button>
+                                        <Button 
+                                            variant="outline-secondary"
+                                            disabled={isTooSmall || amount > parseFloat(profile.balance.toFixed(2))}
+                                            id="withdrawBtn"
+                                            onClick={handleBalanceUpdateSubmission}
+                                        >
+                                            Withdraw
+                                        </Button>
                                     </InputGroup>
                                     
                                 </ButtonToolbar>
