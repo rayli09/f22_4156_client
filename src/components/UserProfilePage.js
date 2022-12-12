@@ -136,27 +136,24 @@ const UserProfilePage = (props) => {
                                             Withdraw
                                         </Button>
                                     </InputGroup>
-                                    
                                 </ButtonToolbar>
 
                                 {profile.type === "BUSINESS" && (
-                                    <InputGroup>
-                                        <Form.Group
-                                            className="mb-3"
-                                            controlId="formAds"
+                                    <Form.Group
+                                        className="mb-3"
+                                        controlId="formAds"
+                                    >
+                                        <Form.Label>Edit Your Advertisement</Form.Label>
+                                        <Form.Control onChange={onEditAds} type="text" defaultValue={profile.bizPromotionText} />
+                                        <Button 
+                                            variant="outline-secondary"
+                                            disabled={!adsPayload}
+                                            id="adsBtn"
+                                            onClick={handleAdsSubmit}
                                         >
-                                            <Form.Label>Edit Your Advertisement</Form.Label>
-                                            <Form.Control onChange={onEditAds} type="text" defaultValue={profile.bizPromotionText} />
-                                            <Button 
-                                                variant="outline-secondary"
-                                                disabled={!adsPayload}
-                                                id="adsBtn"
-                                                onClick={handleAdsSubmit}
-                                            >
-                                                Update
-                                            </Button>
-                                        </Form.Group>
-                                    </InputGroup>
+                                            Update
+                                        </Button>
+                                    </Form.Group>
                                 )}
                             </>
                         )}
