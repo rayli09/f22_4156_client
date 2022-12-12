@@ -177,7 +177,7 @@ def get_token():
 def handle_register(request):
     rsp = requests.post('{S}/auth/register'.format(S=REMOTE_SERVICE_ENDPOINT), json=request.json)
     # use json.loads to parse json properly
-    return json.loads(rsp.text)
+    return json.loads(rsp.text), rsp.status_code
 
 
 def handle_login(request):

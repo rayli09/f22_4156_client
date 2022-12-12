@@ -15,14 +15,14 @@ export default function Signup(props) {
     const [notice, setNotice] = useState();
     const [success, setSuccess] = useState();
     const [submitted, setSubmitted] = useState(false);
-    const onEmail = (e) => setEmail(e.target.value);
-    const onPassword = (e) => setPassword(e.target.value);
-    const onAccountName = (e) => setAccountName(e.target.value);
-    const onAccountNumber = (e) => setAccountNumber(e.target.value);
-    const onRoutingNumber = (e) => setRoutingNumber(e.target.value);
-    const onPhone = (e) => setPhone(e.target.value);
-    const onBizType = (e) => setIsBizType(e.target.checked);
-    const onAds = (e) => setAds(e.target.value);
+    const onEmail = (e) => { setEmail(e.target.value); setSubmitted(false); };
+    const onPassword = (e) => { setPassword(e.target.value); setSubmitted(false); };
+    const onAccountName = (e) => { setAccountName(e.target.value); setSubmitted(false); };
+    const onAccountNumber = (e) => { setAccountNumber(e.target.value); setSubmitted(false); };
+    const onRoutingNumber = (e) => { setRoutingNumber(e.target.value); setSubmitted(false); };
+    const onPhone = (e) => { setPhone(e.target.value); setSubmitted(false); };
+    const onBizType = (e) => { setIsBizType(e.target.checked); setSubmitted(false); };
+    const onAds = (e) => { setAds(e.target.value); setSubmitted(false); };
     
     // signup
     const handleSignup = async (e) => {
@@ -39,19 +39,25 @@ export default function Signup(props) {
         }
         try {
             axios.post(`http://127.0.0.1:5000/auth/register`, payload)
-            .then((rsp) => {
-                console.log(rsp);
-                if (rsp.data?.message){
-                    setNotice(rsp.data);
-                } else {
-                    // success register
-                    setSuccess(`${isBizType ? "Business" : "Personal"} User with ID ${rsp.data?.id} is created! Please login in to use the app!`);
-                    setSubmitted(true);
-                }
-
+            .then(rsp => {
+                setSuccess(`${isBizType ? "Business" : "Personal"} User with ID ${rsp.data?.id} is created! Please login in to use the app!`);
+                setSubmitted(true);
             })
+            .catch(err => {
+              setSuccess(null);
+              if (err.response) {
+                setNotice(err.response.data);
+                // console.log(err.response.data);
+              } else {
+                setNotice({
+                  "message": "Network Error!"
+                });
+              }
+            });
         }
         catch (err){
+            setSuccess(null);
+            setNotice(err);
             console.log(err);
         }
     }
