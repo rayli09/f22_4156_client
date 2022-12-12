@@ -1,11 +1,3 @@
-#
-# ********************** IMPORTANT **********************
-# 
-# some of the functions are not fully refactored due to the change we made
-# from ads manager to Zenmo. Please proceed with caution.
-#
-# ********************** IMPORTANT **********************
-
 import json
 from flask import Flask, jsonify, request, session
 from flask_session import Session
@@ -154,7 +146,14 @@ def user_feed():
         return json.loads(rsp.text), 200
     return rsp, 401
 
-
+@app.route('/transfer', methods=['GET'])
+def get_all_transfers():
+    token = request.headers.get('Authorization')
+    if token and token != 'undefined':
+        rsp = requests.get('{S}/transfer'.format(S=REMOTE_SERVICE_ENDPOINT), headers={'Authorization': token})
+        return json.loads(rsp.text), 200
+    return "no token provided!", 401
+    
 @app.route('/transfer/create', methods=['POST'])
 def make_transfer():
     token = request.headers.get('Authorization')

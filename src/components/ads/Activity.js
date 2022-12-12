@@ -12,6 +12,7 @@ import CLIENT from '../../CLIENT';
 
 const Activity = (props) => {
     const act = props?.act;
+    const isViewerPersonal = props?.isViewerPersonal;
     const userType = (type) => (
         type == 'PERSONAL' ? <Badge bg="secondary">{type}</Badge> :
         type == 'BUSINESS' ? <Badge bg="primary">{type}</Badge> :
@@ -85,13 +86,16 @@ const Activity = (props) => {
     return (
         <>
             <Card>
-                <Card.Header>{timestamp}</Card.Header>
+                <Card.Header>{timestamp}<Badge pill bg="light" text="dark">
+                {act?.category}
+      </Badge></Card.Header>
+                    {isViewerPersonal && 
                 <Card.Title>
                     {userType(act?.fromType)}
                     To
                     {userType(act?.toType)}
-                    {amount(act?.amount)}
                 </Card.Title>
+                    }
                 <Card.Title>
                     <Badge pill bg="warning" text="dark">
                         {act?.promoText}
@@ -104,16 +108,16 @@ const Activity = (props) => {
                     {fromUserText} 
                     <Badge bg="success">Paid</Badge> 
                     {toUserText}
+                    {amount(act?.amount)}
                     </Col>
                     </Row>
                 </Card.Subtitle>
                 <Card.Body>
                     <Row>
                         <Col>
-                    Description: {act?.desc} 
-                        </Col>
-                        <Col>
-                    Category: {act?.category}
+                        <p className="lead">
+                    {act?.desc} 
+                        </p>
                         </Col>
                     </Row>
                 </Card.Body>
