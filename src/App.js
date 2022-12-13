@@ -22,7 +22,12 @@ function App() {
       <Routes>
         <Route path="/" element={<Home userData={userData}/>} />
         <Route path="/home" element={<Home userData={userData}/>} />
-        <Route path="/feed" element={<Feed userData={userData}/>} />
+        <Route path="/feed" element={
+          <Feed 
+            userData={userData}
+            profile={profile}
+            setProfile={setProfile}
+          />} />
         <Route path="/request" element={
           <RequestPage 
             userData={userData}

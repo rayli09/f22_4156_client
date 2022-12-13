@@ -10,23 +10,23 @@ import CLIENT from '../CLIENT';
 const Feed = (props) => {
     const [feedData, setFeedData] = useState(null);
     const [noticeMsg, setNoticeMsg] = useState(null);
-    const [profile, setProfile] = useState(null);
+    const [profile, setProfile] = [props.profile, props.setProfile]
     useEffect(() => {
         handleFetchData();
     }, [profile])
-    useEffect(() => {
-        if (profile === null) {
-            CLIENT.get("profile", {
-                headers: {
-                    'Authorization': props?.userData?.token 
-                }
-            }).then((rsp) => {
-                setProfile(rsp.data);
-            }).catch((error) => {
-                console.log(error) 
-            })
-        }
-    },[])
+    // useEffect(() => {
+    //     if (profile === null) {
+    //         CLIENT.get("profile", {
+    //             headers: {
+    //                 'Authorization': props?.userData?.token 
+    //             }
+    //         }).then((rsp) => {
+    //             setProfile(rsp.data);
+    //         }).catch((error) => {
+    //             console.log(error) 
+    //         })
+    //     }
+    // },[])
     const handleFetchData = async () => {
         if (!props?.userData?.token){
             return;

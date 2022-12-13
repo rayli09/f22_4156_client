@@ -14,20 +14,20 @@ const UserProfilePage = (props) => {
     const [adsPayload, setAdsPayload] = useState(null);
     const onAmount = (e) => setAmount(e.target.value);
     const [notice, setNotice] = useState("");
-    console.log(profile);
-    useEffect(() => {
-        if (profile === null) {
-            CLIENT.get("profile", {
-                headers: {
-                    'Authorization': props?.userData?.token 
-                }
-            }).then((rsp) => {
-                setProfile(rsp.data);
-            }).catch((error) => {
-                console.log(error) 
-            })
-        }
-    })
+    // console.log(profile);
+    // useEffect(() => {
+    //     if (profile === null) {
+    //         CLIENT.get("profile", {
+    //             headers: {
+    //                 'Authorization': props?.userData?.token 
+    //             }
+    //         }).then((rsp) => {
+    //             setProfile(rsp.data);
+    //         }).catch((error) => {
+    //             console.log(error) 
+    //         })
+    //     }
+    // })
 
     if (!props?.userData?.token) {
         return "Please log in first!"
