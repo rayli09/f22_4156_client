@@ -22,7 +22,7 @@ const UserProfilePage = (props) => {
           localStorage.setItem('profile',JSON.stringify(rsp));
         }
         fetchProfile();
-    });
+    },[setProfile]);
 
     if (!props?.userData?.token) {
         return "Please log in first!"
