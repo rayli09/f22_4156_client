@@ -15,6 +15,7 @@ import Logout from './components/Logout';
 import TransferPage from './components/TransferPage';
 function App() {
   const [userData, setUserData] = useState(JSON.parse(localStorage.getItem("userData")) || null);
+  const [profile, setProfile] = useState(localStorage.getItem('profile') || null);
   return (
     <BrowserRouter>
       <MyNavbar userData={userData}/> 
