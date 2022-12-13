@@ -8,7 +8,7 @@ const MyNavbar = (props) => {
       props?.userData && <Button variant="light" >{props.userData.email}</Button>
       
     );
-    const isViewerPersonal = props?.profile?.type == 'PERSONAL' || true;
+    const isViewerPersonal = props?.profile?.type == 'PERSONAL';
     return (
       <>
 

@@ -13,12 +13,28 @@ export default function Login(props) {
     const [notice, setNotice] = useState();
     const [success, setSuccess] = useState();
 
+    useEffect(() => {
+      if (props?.profile === null) {
+        CLIENT.get("profile", {
+            headers: {
+                'Authorization': props?.userData?.token 
+            }
+        }).then((rsp) => {
+          console.log('!!!')
+            props?.setProfile(rsp.data);
+            localStorage.setItem('profile',JSON.stringify(rsp.data));
+        }).catch((error) => {
+            console.log(error) 
+        })
+    }
+    }, [props.userData]);
     const handleLogin = async (e) => {
         e.preventDefault();
         const payload = {
             "email" : email,
             "password" : password,
         }
+        
         try {
             CLIENT.post("auth/login", payload)
             .then((rsp) => {
@@ -49,7 +65,7 @@ export default function Login(props) {
                     setNotice(error)
                 }
         
-            })
+            });
         }
         catch (err){
             console.log(err);

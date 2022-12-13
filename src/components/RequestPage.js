@@ -10,6 +10,7 @@ const RequestPage = (props) => {
     if (!props?.userData?.token) {
         return "Please log in first!"
     }
+    console.log(props?.profile)
     if (props?.profile?.type != 'PERSONAL') {
         return 'Request NOT SUPPORTED.';
     }

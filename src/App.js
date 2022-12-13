@@ -15,20 +15,30 @@ import Logout from './components/Logout';
 import TransferPage from './components/TransferPage';
 function App() {
   const [userData, setUserData] = useState(JSON.parse(localStorage.getItem("userData")) || null);
-  const [profile, setProfile] = useState(localStorage.getItem('profile') || null);
+  const [profile, setProfile] = useState(JSON.parse(localStorage.getItem('profile')) || null);
   return (
     <BrowserRouter>
-      <MyNavbar userData={userData}/> 
+      <MyNavbar profile={profile} userData={userData}/> 
       <Routes>
         <Route path="/" element={<Home userData={userData}/>} />
         <Route path="/home" element={<Home userData={userData}/>} />
         <Route path="/feed" element={<Feed userData={userData}/>} />
-        <Route path="/request" element={<RequestPage userData={userData}/>} />
+        <Route path="/request" element={
+          <RequestPage 
+            userData={userData}
+            profile={profile}
+            setProfile={setProfile}
+            />} />
         <Route path="/transfer" element={<TransferPage userData={userData} />} />
-        <Route path="/profile" element={<UserProfilePage userData={userData} />} />
-        <Route path="/login" element={<Login userData={userData} setUserData={setUserData}/>} />
+        <Route path="/profile" element={
+          <UserProfilePage 
+            userData={userData}
+            profile={profile}
+            setProfile={setProfile} />
+        }/>
+        <Route path="/login" element={<Login profile={profile} setProfile={setProfile} userData={userData} setUserData={setUserData}/>} />
         <Route path="/signup" element={<Signup userData={userData}/>} />
-        <Route path="/logout" element={<Logout setUserData={setUserData}/>} />
+        <Route path="/logout" element={<Logout setProfile={setProfile} setUserData={setUserData}/>} />
         <Route path="*" element={<Nopage />} />
       </Routes>
     </BrowserRouter>

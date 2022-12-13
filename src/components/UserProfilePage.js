@@ -7,12 +7,14 @@ import CLIENT from '../CLIENT';
 import NoticeBanner from "./NoticeBanner";
 
 const UserProfilePage = (props) => {
-    const [profile, setProfile] = useState(null);
+    // const [profile, setProfile] = useState(null);
+    const profile = props.profile;
+    const setProfile = props.setProfile;
     const [amount, setAmount] = useState(0.);
     const [adsPayload, setAdsPayload] = useState(null);
     const onAmount = (e) => setAmount(e.target.value);
     const [notice, setNotice] = useState("");
-    
+    console.log(profile);
     useEffect(() => {
         if (profile === null) {
             CLIENT.get("profile", {
