@@ -8,6 +8,7 @@ const MyNavbar = (props) => {
       props?.userData && <Button variant="light" >{props.userData.email}</Button>
       
     );
+    const isViewerPersonal = props?.profile?.type == 'PERSONAL';
     return (
       <>
 
@@ -18,7 +19,9 @@ const MyNavbar = (props) => {
           {username && (
             <>
               <Nav.Link as={Link} to="/feed">Feed</Nav.Link>
+              {isViewerPersonal && 
               <Nav.Link as={Link} to="/request">Request</Nav.Link>
+              }
               <Nav.Link as={Link} to="/transfer">Transfer</Nav.Link>
               <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
             </>

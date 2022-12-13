@@ -2,8 +2,8 @@ import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import NoticeBanner from "./NoticeBanner";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import CLIENT from '../CLIENT';
+import { APIs } from "../api";
 
 export default function Login(props) {
     const [email, setEmail] = useState();
@@ -13,16 +13,25 @@ export default function Login(props) {
     const [notice, setNotice] = useState();
     const [success, setSuccess] = useState();
 
+    useEffect(() => {
+        async function fetchProfile() {
+          const rsp = await APIs.getProfile();
+          console.log(rsp);
+          props?.setProfile(rsp);
+          localStorage.setItem('profile',JSON.stringify(rsp));
+        }
+        fetchProfile();
+    }, [setSuccess, props?.userData]);
     const handleLogin = async (e) => {
         e.preventDefault();
         const payload = {
             "email" : email,
             "password" : password,
         }
+        
         try {
             CLIENT.post("auth/login", payload)
-            .then((rsp) => {
-                // console.log(rsp);
+            .then((rsp) => {                
                 if (rsp.data?.message){
                     setNotice(rsp.data);
                 } else if (rsp.data?.token) {
@@ -34,10 +43,6 @@ export default function Login(props) {
                     }
                     props?.setUserData(user);
                     localStorage.setItem("userData", JSON.stringify(user));
-                    // console.log("already set items!!!");
-                    // console.log(localStorage.getItem("userData"))
-                    // history.push("/home");
-                    // history.go();
                 } else {
                     setNotice('Err when logging in.')
                 }
@@ -49,7 +54,7 @@ export default function Login(props) {
                     setNotice(error)
                 }
         
-            })
+            });
         }
         catch (err){
             console.log(err);
