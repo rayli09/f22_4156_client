@@ -5,29 +5,24 @@ import { Card, Container, Form, ListGroup }  from 'react-bootstrap';
 import InputGroup from 'react-bootstrap/InputGroup';
 import CLIENT from '../CLIENT';
 import NoticeBanner from "./NoticeBanner";
+import { APIs } from '../api';
 
 const UserProfilePage = (props) => {
-    // const [profile, setProfile] = useState(null);
     const profile = props.profile;
     const setProfile = props.setProfile;
     const [amount, setAmount] = useState(0.);
     const [adsPayload, setAdsPayload] = useState(null);
     const onAmount = (e) => setAmount(e.target.value);
     const [notice, setNotice] = useState("");
-    // console.log(profile);
-    // useEffect(() => {
-    //     if (profile === null) {
-    //         CLIENT.get("profile", {
-    //             headers: {
-    //                 'Authorization': props?.userData?.token 
-    //             }
-    //         }).then((rsp) => {
-    //             setProfile(rsp.data);
-    //         }).catch((error) => {
-    //             console.log(error) 
-    //         })
-    //     }
-    // })
+    useEffect(() => {
+        async function fetchProfile() {
+          const rsp = await APIs.getProfile();
+          console.log(rsp);
+          props?.setProfile(rsp);
+          localStorage.setItem('profile',JSON.stringify(rsp));
+        }
+        fetchProfile();
+    });
 
     if (!props?.userData?.token) {
         return "Please log in first!"
@@ -54,7 +49,6 @@ const UserProfilePage = (props) => {
                 console.log(err);
             })
         } catch (err) {
-            // setNotice(err);
             console.log(err);
         }
     }
