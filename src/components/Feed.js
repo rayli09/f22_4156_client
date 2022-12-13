@@ -6,7 +6,7 @@ import Activity from './ads/Activity'
 import NoticeBanner from './NoticeBanner';
 import { END_POINT } from '../utils';
 import CLIENT from '../CLIENT';
-
+import { APIs } from '../api';
 const Feed = (props) => {
     const [feedData, setFeedData] = useState(null);
     const [noticeMsg, setNoticeMsg] = useState(null);
@@ -14,34 +14,17 @@ const Feed = (props) => {
     useEffect(() => {
         handleFetchData();
     }, [profile])
-    // useEffect(() => {
-    //     if (profile === null) {
-    //         CLIENT.get("profile", {
-    //             headers: {
-    //                 'Authorization': props?.userData?.token 
-    //             }
-    //         }).then((rsp) => {
-    //             setProfile(rsp.data);
-    //         }).catch((error) => {
-    //             console.log(error) 
-    //         })
-    //     }
-    // },[])
     const handleFetchData = async () => {
         if (!props?.userData?.token){
             return;
         }
-        axios.get(profile?.type == 'PERSONAL' ? `${END_POINT}feed` : `${END_POINT}transfer` ,{
-            headers: {
-                'Authorization': props?.userData?.token 
-            }
-        }).then((rsp) => {
-            console.log(rsp)
-            setFeedData(rsp.data);
-        }).catch(function (error) {
-            console.log(error)
-            setNoticeMsg("error when fetching feed.");      
-        })
+        let data;
+        if (profile?.type == 'PERSONAL') {
+            data = await APIs.getFeed();
+        } else {
+            data = await APIs.getTransfers();
+        }
+        setFeedData(data);  
     }
     const feedContent = () => {
         const feed = profile?.type == 'PERSONAL' ? feedData?.activities : feedData?.transfers

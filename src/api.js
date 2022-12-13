@@ -30,6 +30,25 @@ export const APIs = {
             console.error(e);
             return e;
         }
+    },
+    async getFeed() {
+        try {
+            const rsp = await request.get('/feed');
+            return rsp.data;
+        } catch (e) {
+            console.error(e);
+            return e;
+        }
+    },
+    async getTransfers() {
+        // get user's all transfers
+        try {
+            const rsp = await request.get('/transfer');
+            return rsp.data;
+        } catch (e) {
+            console.error(e);
+            return e;
+        }
     }
 }
 
