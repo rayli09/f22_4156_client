@@ -4,6 +4,8 @@ import NoticeBanner from "./NoticeBanner";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CLIENT from '../CLIENT';
+import { APIs } from "../api";
+// import API
 
 export default function Login(props) {
     const [email, setEmail] = useState();
@@ -14,20 +16,14 @@ export default function Login(props) {
     const [success, setSuccess] = useState();
 
     useEffect(() => {
-      if (props?.profile === null) {
-        CLIENT.get("profile", {
-            headers: {
-                'Authorization': props?.userData?.token 
-            }
-        }).then((rsp) => {
-          console.log('!!!')
-            props?.setProfile(rsp.data);
-            localStorage.setItem('profile',JSON.stringify(rsp.data));
-        }).catch((error) => {
-            console.log(error) 
-        })
-    }
-    }, [props.userData]);
+        async function fetchProfile() {
+          const rsp = await APIs.getProfile();
+          console.log(rsp);
+          props?.setProfile(rsp);
+          localStorage.setItem('profile',JSON.stringify(rsp));
+        }
+        fetchProfile();
+    }, [setSuccess, props?.userData]);
     const handleLogin = async (e) => {
         e.preventDefault();
         const payload = {
