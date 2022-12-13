@@ -10,6 +10,9 @@ const RequestPage = (props) => {
     if (!props?.userData?.token) {
         return "Please log in first!"
     }
+    if (props?.userData.type != 'PERSONAL') {
+        return 'Request NOT SUPPORTED for non-personal users.';
+    }
     return(
         <Container>
             <NoticeBanner />
