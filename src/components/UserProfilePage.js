@@ -14,17 +14,17 @@ const UserProfilePage = (props) => {
     const [adsPayload, setAdsPayload] = useState(null);
     const onAmount = (e) => setAmount(e.target.value);
     const [notice, setNotice] = useState("");
-    useEffect(() => {
-        async function fetchProfile() {
-          const rsp = await APIs.getProfile();
-          console.log(rsp);
-          props?.setProfile(rsp);
-          localStorage.setItem('profile',JSON.stringify(rsp));
-        }
+    async function fetchProfile() {
+        const rsp = await APIs.getProfile();
+        console.log(rsp);
+        props?.setProfile(rsp);
+        localStorage.setItem('profile',JSON.stringify(rsp));
+      }
+    useEffect(() => { 
         if (!profile) {
         fetchProfile();
         }
-    },[amount]);
+    },[amount, setAdsPayload]);
 
     if (!props?.userData?.token) {
         return "Please log in first!"
@@ -73,6 +73,7 @@ const UserProfilePage = (props) => {
                 setProfile(null);
                 setAmount(0.);
                 setNotice("Your advertisement was updated successfully!");
+                fetchProfile();
             }).catch(err => {
                 setNotice(err);
                 console.log(err);
